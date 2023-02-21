@@ -8,9 +8,6 @@ import javax.swing.*;
  */
 public interface menuMsfService {
     /**
-    * @param LhostValue:
-     * @param LportValue:
-     * @param FileNameVaule:
      * @param sessionIdTextField:
      * @param msfRootTextArea:
      * @param msfLinuxHexTextField:
@@ -23,7 +20,7 @@ public interface menuMsfService {
      * @date: 2023/1/20 21:47
      * @description: msf传入的值
      */
-    void msfShellMenu(JTextField LhostValue, JTextField LportValue, JTextField FileNameVaule,
+    void msfShellMenu(
                       JTextField sessionIdTextField,
                       JTextArea msfRootTextArea, JTextField msfLinuxHexTextField,
                       JTextField msfLinuxELFTextField, JTextArea msfLinuxListenerTextArea,

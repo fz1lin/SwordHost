@@ -8,14 +8,13 @@ import javax.swing.*;
  */
 public interface menuReverseService {
     /**
-     * @param LhostValue:
-     * @param LportValue:
      * @param Bash1TextArea:
      * @param Bash2TextArea:
-     * @param JavaBashTextArea:
      * @return: void
      * @date: 2023/1/20 21:28
      * @description: bash反弹shell选项菜单
      */
-    void reverseOptionsMenu(JTextField LhostValue, JTextField LportValue, JTextField Bash1TextArea, JTextField Bash2TextArea, JTextField JavaBashTextArea);
+    void reverseBashOptionsMenu(JTextField Bash1TextArea
+            , JTextField Bash2TextArea,JTextField Bash3TCPTextField,JTextField Bash1UDPTextField,JTextField Bash2UDPTextField);
+    void reverseAwkOptionsMenu(JTextField ReverseAwkTextField);
 }

@@ -11,11 +11,12 @@ import java.awt.datatransfer.StringSelection;
 public class copyEchoText {
 
     //点击按钮复制文本
-    public static void init(String text){
+    public static boolean init(String text) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection selection = new StringSelection(text);
         clipboard.setContents(selection, null);
-        System.out.println(text);
+        return true;
     }
+
 
 }

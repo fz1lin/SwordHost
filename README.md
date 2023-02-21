@@ -69,7 +69,7 @@ MSF页面
 https://github.com/0dayCTF/reverse-shell-generator
 
 https://base64.us/
-
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp
 ## 0x05 免责声明
 
 本工具仅能在取得足够合法授权的企业安全建设中使用，在使用本工具过程中，您应确保自己所有行为符合当地的法律法规。

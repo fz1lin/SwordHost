@@ -9,26 +9,20 @@ import javax.swing.*;
 public interface menuJavaService {
 
     /**
-    * @param LhostValue:
-     * @param LportValue:
-     * @param DNSlogValue:
      * @param FaEXP1TextArea:
      * @param FaDNSlogTextArea:
      * @return: void
      * @date: 2023/1/22 21:44
      * @description: fastjson菜单相关
      */
-    void fastjsonMenu(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue, JTextArea FaEXP1TextArea, JTextArea FaDNSlogTextArea);
+    void fastjsonMenu(  JTextArea FaEXP1TextArea, JTextArea FaDNSlogTextArea,String inputString);
 
     /**
-    * @param LhostValue:
-     * @param LportValue:
-     * @param DNSlogValue:
      * @param LoIPTextArea:
      * @param LoDNSlogTextArea:
      * @return: void
      * @date: 2023/1/22 21:44
      * @description: Log4j2 相关
      */
-    void log4j2Menu(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue, JTextField LoIPTextArea, JTextField LoDNSlogTextArea);
+    void log4j2Menu( JTextField LoIPTextArea, JTextField LoDNSlogTextArea);
 }

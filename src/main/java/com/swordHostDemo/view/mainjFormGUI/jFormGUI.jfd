@@ -124,8 +124,31 @@ new FormModel {
 						"x": 670
 						"y": 5
 					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ipLongSettingButton"
+						"text": new FormMessage( null, "ipLongSettingButton.text" )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ipLongSettingButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 570
+						"y": 70
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label73"
+						"text": new FormMessage( null, "label73.text" )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 570
+						"y": 45
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ipLongRenewButton"
+						"text": new FormMessage( null, "ipLongRenewButton.text" )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ipLongRenewButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 670
+						"y": 70
+					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 785
+					"width": 800
 					"height": 105
 					"x": 10
 					"y": 95
@@ -295,7 +318,7 @@ new FormModel {
 								"text": new FormMessage( null, "label35.text" )
 							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 								"x": 25
-								"y": 75
+								"y": 70
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
 								name: "Bash1TextArea"
@@ -308,21 +331,7 @@ new FormModel {
 								name: "Bash2TextArea"
 							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 								"x": 20
-								"y": 100
-								"width": 565
-							} )
-							add( new FormComponent( "javax.swing.JLabel" ) {
-								name: "label43"
-								"text": new FormMessage( null, "label43.text" )
-							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-								"x": 25
-								"y": 145
-							} )
-							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "JavaBashTextArea"
-							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-								"x": 20
-								"y": 175
+								"y": 90
 								"width": 565
 							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
@@ -339,26 +348,94 @@ new FormModel {
 								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReBash2ButtonMouseClicked", true ) )
 							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 								"x": 605
-								"y": 100
-							} )
-							add( new FormComponent( "javax.swing.JButton" ) {
-								name: "ReJavaBashbutton"
-								"text": new FormMessage( null, "ReJavaBashbutton.text" )
-								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReJavaBashbuttonMouseClicked", true ) )
-							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-								"x": 605
-								"y": 175
+								"y": 90
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
-								name: "ReCopyEcholabel"
+								name: "label76"
+								"text": new FormMessage( null, "label76.text" )
 							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 								"x": 25
-								"y": 315
-								"width": 655
-								"height": 30
+								"y": 130
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "Bash3TCPTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 20
+								"y": 150
+								"width": 565
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "Bash3TCPButton"
+								"text": new FormMessage( null, "Bash3TCPButton.text" )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "Bash3TCPButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 605
+								"y": 150
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "Bash1UDPTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 20
+								"y": 215
+								"width": 565
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "Bash2UDPTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 25
+								"y": 285
+								"width": 560
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label84"
+								"text": new FormMessage( null, "label84.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 25
+								"y": 190
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label85"
+								"text": new FormMessage( null, "label85.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 25
+								"y": 260
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "button2"
+								"text": new FormMessage( null, "button2.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 610
+								"y": 215
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "button5"
+								"text": new FormMessage( null, "button5.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 610
+								"y": 285
 							} )
 						}, new FormLayoutConstraints( null ) {
 							"title": new FormMessage( null, "BashOptions.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+							name: "AwkOptions"
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "ReverseAwkTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 30
+								"y": 50
+								"width": 575
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "ReverseAwkCopyButton"
+								"text": new FormMessage( null, "ReverseAwkCopyButton.text" )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReverseAwkCopyButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 630
+								"y": 50
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "AwkOptions.tab.title" )
 						} )
 					}, new FormLayoutConstraints( null ) {
 						"title": new FormMessage( null, "ReverseMenu.tab.title" )
@@ -447,8 +524,8 @@ new FormModel {
 										name: "PythonTextArea"
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-									"x": 20
-									"y": 25
+									"x": 40
+									"y": 30
 									"width": 665
 									"height": 145
 								} )
@@ -1024,6 +1101,7 @@ new FormModel {
 									name: "FaEXP1"
 									add( new FormComponent( "javax.swing.JTextArea" ) {
 										name: "FaEXP1TextArea"
+										addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "FaEXP1TextAreaKeyPressed", true ) )
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 									"width": 620
@@ -1095,10 +1173,10 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 						name: "REs"
 						add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
-							name: "tabbedPane3"
+							name: "ResTabbedPane"
 							"tabPlacement": 2
 							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
-								name: "panel9"
+								name: "ReExpressionPanel"
 								add( new FormComponent( "javax.swing.JLabel" ) {
 									name: "label11"
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
@@ -1254,12 +1332,102 @@ new FormModel {
 									"y": 210
 								} )
 							}, new FormLayoutConstraints( null ) {
-								"title": new FormMessage( null, "panel9.tab.title" )
+								"title": new FormMessage( null, "ReExpressionPanel.tab.title" )
+							} )
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+								name: "ReMasscanPanel"
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label68"
+									"text": new FormMessage( null, "label68.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 25
+									"y": 15
+									"height": 15
+								} )
+								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+									name: "scrollPane9"
+									add( new FormComponent( "javax.swing.JTextArea" ) {
+										name: "ReInputVauletextArea"
+										addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "ReInputVauletextAreaCaretUpdate", true ) )
+									} )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 20
+									"y": 70
+									"width": 360
+									"height": 220
+								} )
+								add( new FormComponent( "javax.swing.JTextField" ) {
+									name: "ReMasscanTextField"
+									"text": new FormMessage( null, "ReMasscanTextField.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 410
+									"y": 65
+									"width": 165
+								} )
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label69"
+									"text": new FormMessage( null, "label69.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 410
+									"y": 30
+								} )
+								add( new FormComponent( "javax.swing.JButton" ) {
+									name: "ReResetButton"
+									"text": new FormMessage( null, "ReResetButton.text" )
+									addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReResetButtonMouseClicked", true ) )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 20
+									"y": 310
+								} )
+								add( new FormComponent( "javax.swing.JButton" ) {
+									name: "ReCopyMasscanButton"
+									"text": new FormMessage( null, "ReCopyMasscanButton.text" )
+									addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReCopyMasscanButtonMouseClicked", true ) )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 600
+									"y": 65
+								} )
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "ReCopySelabel"
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 575
+									"y": 20
+									"width": 130
+									"height": 35
+								} )
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label70"
+									"text": new FormMessage( null, "label70.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 25
+									"y": 40
+								} )
+								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+									name: "scrollPane19"
+									add( new FormComponent( "javax.swing.JTextArea" ) {
+										name: "ReIPPortFTextArea"
+									} )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 410
+									"y": 140
+									"width": 195
+									"height": 190
+								} )
+								add( new FormComponent( "javax.swing.JButton" ) {
+									name: "ReIPPortCopyButton"
+									"text": new FormMessage( null, "ReIPPortCopyButton.text" )
+									addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReIPPortCopyButtonMouseClicked", true ) )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"x": 620
+									"y": 200
+								} )
+							}, new FormLayoutConstraints( null ) {
+								"title": new FormMessage( null, "ReMasscanPanel.tab.title" )
 							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 							"x": 0
 							"y": 0
-							"width": 770
+							"width": 800
 							"height": 385
 						} )
 					}, new FormLayoutConstraints( null ) {
@@ -1506,6 +1674,66 @@ new FormModel {
 							}, new FormLayoutConstraints( null ) {
 								"title": new FormMessage( null, "UnicodeOptions.tab.title_2" )
 							} )
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+								name: "JavaBase64OptionsPanel"
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label43"
+									"text": new FormMessage( null, "label43.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 53
+									"height": 17
+									"x": 30
+									"y": 45
+								} )
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label78"
+									"text": new FormMessage( null, "label78.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 106
+									"height": 17
+									"x": 25
+									"y": 80
+								} )
+								add( new FormComponent( "javax.swing.JTextField" ) {
+									name: "JavaBaseInputTextField"
+									addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "JavaBaseInputTextFieldKeyReleased", true ) )
+									addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "JavaBaseInputTextFieldKeyPressed", true ) )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 560
+									"height": 30
+									"x": 25
+									"y": 110
+								} )
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label82"
+									"text": new FormMessage( null, "label82.text" )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 213
+									"height": 17
+									"x": 25
+									"y": 165
+								} )
+								add( new FormComponent( "javax.swing.JTextField" ) {
+									name: "JavaBaseOtputTextField"
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 565
+									"height": 30
+									"x": 20
+									"y": 205
+								} )
+								add( new FormComponent( "javax.swing.JButton" ) {
+									name: "ReJavaBashbutton"
+									"text": new FormMessage( null, "ReJavaBashbutton.text" )
+									addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ReJavaBashbuttonMouseClicked", true ) )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+									"width": 78
+									"height": 30
+									"x": 600
+									"y": 205
+								} )
+							}, new FormLayoutConstraints( null ) {
+								"title": new FormMessage( null, "JavaBase64OptionsPanel.tab.title" )
+							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 							"x": 0
 							"y": 0
@@ -1603,7 +1831,7 @@ new FormModel {
 							"title": new FormMessage( null, "RaPasswordOptions.tab.title" )
 						} )
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
-							name: "panel1"
+							name: "timeStampOptions"
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "label61"
 								"text": new FormMessage( null, "label61.text" )
@@ -1699,7 +1927,166 @@ new FormModel {
 								"y": 30
 							} )
 						}, new FormLayoutConstraints( null ) {
-							"title": new FormMessage( null, "panel1.tab.title" )
+							"title": new FormMessage( null, "timeStampOptions.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+							name: "ipLongOptions"
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "ipLongInputField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 40
+								"y": 80
+								"width": 210
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "ipLongOutputTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 40
+								"y": 220
+								"width": 210
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label71"
+								"text": new FormMessage( null, "label71.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 45
+								"y": 50
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label72"
+								"text": new FormMessage( null, "label72.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 45
+								"y": 185
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "ipLongIPButton"
+								"text": new FormMessage( null, "ipLongIPButton.text" )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ipLongIPButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 155
+								"y": 135
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "ipLongnNumButton"
+								"text": new FormMessage( null, "ipLongnNumButton.text" )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ipLongnNumButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 40
+								"y": 135
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "ipLongOptions.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+							name: "ipAddressOptions"
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "ipAddressTextField"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 35
+								"y": 50
+								"width": 255
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label74"
+								"text": new FormMessage( null, "label74.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 40
+								"y": 20
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "ipAddressSwitchButton"
+								"text": new FormMessage( null, "ipAddressSwitchButton.text" )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "ipAddressSwitchButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 35
+								"y": 100
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label75"
+								"text": new FormMessage( null, "label75.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 45
+								"y": 170
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "ipAddressSubNetlabel"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"x": 110
+								"y": 165
+								"width": 235
+								"height": 25
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label77"
+								"text": new FormMessage( null, "label77.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 60
+								"height": 17
+								"x": 45
+								"y": 200
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "ipAddressNetworkdlabel"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 235
+								"height": 25
+								"x": 110
+								"y": 195
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label79"
+								"text": new FormMessage( null, "label79.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 60
+								"height": 17
+								"x": 45
+								"y": 230
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "ipAddressStartLabel"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 235
+								"height": 25
+								"x": 110
+								"y": 225
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label81"
+								"text": new FormMessage( null, "label81.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 60
+								"height": 17
+								"x": 45
+								"y": 260
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "ipAddressEndLabel"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 235
+								"height": 25
+								"x": 110
+								"y": 255
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label83"
+								"text": new FormMessage( null, "label83.text" )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 80
+								"height": 17
+								"x": 35
+								"y": 290
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "ipAddressTotalIpLabel"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 235
+								"height": 25
+								"x": 110
+								"y": 285
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "ipAddressOptions.tab.title" )
 						} )
 					}, new FormLayoutConstraints( null ) {
 						"title": new FormMessage( null, "RandomMenu.tab.title" )
@@ -1733,6 +2120,14 @@ new FormModel {
 			} )
 			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 				name: "AboutOptionsMenuBar"
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menu1"
+					"text": new FormMessage( null, "menu1.text" )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItem1"
+						"text": new FormMessage( null, "menuItem1.text" )
+					} )
+				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "AboutOptionsMenu"
 					"text": new FormMessage( null, "AboutOptionsMenu.text" )

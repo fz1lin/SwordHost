@@ -1,7 +1,7 @@
 package com.swordHostDemo.service.reverse;
 
 import com.swordHostDemo.controller.ReverseController;
-import com.swordHostDemo.utls.enCodeUtls;
+import com.swordHostDemo.pojo.menuBeanListener;
 
 import javax.swing.*;
 
@@ -12,18 +12,36 @@ import javax.swing.*;
 public class menuReverseServiceImpl implements menuReverseService {
 
     @Override
-    public void reverseOptionsMenu(JTextField LhostValue, JTextField LportValue, JTextField Bash1TextArea, JTextField Bash2TextArea, JTextField JavaBashTextArea) {
-        //BashOption
-        String bash1Option = ReverseController.ReverseBash1(LhostValue.getText(), LportValue.getText());
+    public void reverseBashOptionsMenu( JTextField Bash1TextArea,
+                                       JTextField Bash2TextArea, JTextField Bash3TCPTextField
+            , JTextField Bash1UDPTextField, JTextField Bash2UDPTextField
+    ) {
+     //Bash1Option
+        String bash1Option = ReverseController.ReverseBashTCP1();
         Bash1TextArea.setText(bash1Option);
 
-        //BashOption
-        String bash2Option = ReverseController.ReverseBash2(LhostValue.getText(), LportValue.getText());
+        //Bash2Option
+        String bash2Option = ReverseController.ReverseBashTCP2();
         Bash2TextArea.setText(bash2Option);
 
-        //JavaBashOption
-        String javaBashOption = enCodeUtls.JavaEncode(LhostValue.getText(), LportValue.getText());
-        JavaBashTextArea.setText(javaBashOption);
+        //Bash3TCP
+        String bash3Options = ReverseController.ReverseBashTCP3();
+        Bash3TCPTextField.setText(bash3Options);
+
+        //Bash udp 1
+        String bash1UDP = ReverseController.ReverseBashUDPVictim();
+        Bash1UDPTextField.setText(bash1UDP);
+
+        //bash udp 2
+        String bash2UDP = ReverseController.ReverseBashUDPListener();
+        Bash2UDPTextField.setText(bash2UDP);
+    }
+
+    @Override
+    public void reverseAwkOptionsMenu( JTextField ReverseAwkTextField) {
+
+        String reverseAwkTextField = ReverseController.ReverseAWKString1();
+        ReverseAwkTextField.setText(reverseAwkTextField);
 
     }
 }

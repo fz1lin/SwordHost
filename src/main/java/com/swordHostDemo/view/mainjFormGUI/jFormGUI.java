@@ -4,10 +4,12 @@
 
 package com.swordHostDemo.view.mainjFormGUI;
 
+import com.swordHostDemo.MainJFormGUI;
 import com.swordHostDemo.controller.MetasploitController;
-import com.swordHostDemo.controller.ReController;
+import com.swordHostDemo.controller.ProxyController;
 import com.swordHostDemo.controller.TimeStampController;
 import com.swordHostDemo.dao.menuCurd.menuCurdDaoImpl;
+import com.swordHostDemo.pojo.menuBeanListener;
 import com.swordHostDemo.service.history.menuHistroyListImpl;
 import com.swordHostDemo.service.java.menuJavaServiceImpl;
 import com.swordHostDemo.service.msf.menuMsfServiceImpl;
@@ -17,14 +19,18 @@ import com.swordHostDemo.service.reverse.menuReverseServiceImpl;
 import com.swordHostDemo.service.tools.menuToolsServiceImpl;
 import com.swordHostDemo.utls.*;
 import com.swordHostDemo.view.listViewGUI.listViewGUI;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -36,10 +42,9 @@ public class jFormGUI extends JFrame {
         initComponents();
     }
 
-    private final String VersionString = "Version：SwordHost " + "v1.0.0";
+
     private final String GitHubString = "\r\n" + "GitHub：https://github.com/fz1lin/SwordHost";
     private final String AuthorString = "\r\n" + "Author：By fz1lin";
-
 
     //程序启动的时候做的事情
     public void windowStartInit() {
@@ -54,15 +59,29 @@ public class jFormGUI extends JFrame {
         }
 
         //menuToolsService
+        PasswordLens.setValue(16);
         menuToolsService.getTimeStamp(timeStampEchoTextField, StampTimeEchoTextField);
         menuToolsService.URLMenucomboBox1(URLMenucomboBox);
         menuToolsService.passwordInit(ABCcheckBox, abcckBox, NumcheckBox);
+
         menuToolsService.passwordcheckBoxInit(ABCcheckBox, abcckBox, NumcheckBox, PasswordLens, RandomTextField, SigncheckBox);
 
+
+        //自然数初始化
+        ipAddressInit();
         //历史菜单初始化
         historyListInit();
+        //fastjson文本域高亮
+
+//
     }
 
+    //自然数转IP初始化
+    public void ipAddressInit() {
+        String lhost = LhostValue.getText();
+        ipLongInputField.setText(lhost);
+        ipLongOutputTextField.setText(ipAddressUtls.ipToLonginit(lhost));
+    }
 
     //保存输入框输入的数据
     public void saveMenuData() {
@@ -94,31 +113,50 @@ public class jFormGUI extends JFrame {
         }
     }
 
+
     //实时监听菜单栏输入的值，然后变化对应的值
     public void menuKeyInit() {
+        menuBeanListener.setLhost(LhostValue.getText());
+        menuBeanListener.setLport(LportValue.getText());
+        menuBeanListener.setDnsLog(DNSlogValue.getText());
+        menuBeanListener.setFileName(FileNameVaule.getText());
+        menuBeanListener.setCommand(CommandVaule.getText());
+        menuBeanListener.setRhost(RhostValue.getText());
+        menuBeanListener.setRport(RportVaule.getText());
+        ProxyController.setS("243141");
+
+
         //menuReverseService
         menuReverseServiceImpl menuReverseService = new menuReverseServiceImpl();
-        menuReverseService.reverseOptionsMenu(LhostValue, LportValue, Bash1TextArea, Bash2TextArea, JavaBashTextArea);
+        menuReverseService.reverseBashOptionsMenu(Bash1TextArea,
+                Bash2TextArea, Bash3TCPTextField, Bash1UDPTextField, Bash2UDPTextField);
+        menuReverseService.reverseAwkOptionsMenu(ReverseAwkTextField);
+
 
         //menuRceService
         menuRceServiceImpl menuRceService = new menuRceServiceImpl();
-        menuRceService.rceMenu(LhostValue, LportValue, FileNameVaule, Curl1TextField, Curl2TextField, Wget1TextArea, PythonTextArea);
+        menuRceService.rceMenu(Curl1TextField, Curl2TextField, Wget1TextArea, PythonTextArea);
 
         //menuMsfService
         menuMsfServiceImpl menuMsfService = new menuMsfServiceImpl();
-        menuMsfService.msfShellMenu(LhostValue, LportValue, FileNameVaule, sessionIdTextField, msfRootTextArea,
+        menuMsfService.msfShellMenu(sessionIdTextField, msfRootTextArea,
                 msfLinuxHexTextField, msfLinuxELFTextField, msfLinuxListenerTextArea, msfWindowsListenerTextArea,
                 csMsfTextArea, MSFcsTextArea);
 
         //menuProxyService
         menuProxyServiceImpl menuProxyService = new menuProxyServiceImpl();
-        menuProxyService.stowawayOption(LhostValue, LportValue, FileNameVaule, stAdminTextArea, stLinuxAgentTextArea, stWindowsAgentTextArea);
+        menuProxyService.stowawayOption(stAdminTextArea, stLinuxAgentTextArea, stWindowsAgentTextArea);
 
 
         //menuJavaService
         menuJavaServiceImpl menuJavaService = new menuJavaServiceImpl();
-        menuJavaService.fastjsonMenu(LhostValue, LportValue, DNSlogValue, FaEXP1TextArea, FaDNSlogTextArea);
-        menuJavaService.log4j2Menu(LhostValue, LportValue, DNSlogValue, LoIPTextField, LoDNSlogTextField);
+        menuJavaService.fastjsonMenu(FaEXP1TextArea, FaDNSlogTextArea, JavaBaseOtputTextField.getText());
+        menuJavaService.log4j2Menu(LoIPTextField, LoDNSlogTextField);
+
+        //高亮
+        new customHighlightTextArea(FaEXP1TextArea, FaEXP1);
+
+        new TextAreaWithContextMenu(FaDNSlogTextArea);
 
     }
 
@@ -176,7 +214,6 @@ public class jFormGUI extends JFrame {
         System.out.println("GUI-Command：" + CommandVaule.getText());
         //调用方法
         menuKeyInit();
-
     }
 
     //FielName
@@ -218,8 +255,11 @@ public class jFormGUI extends JFrame {
     //窗口启动做的事情
     private void thisWindowOpened(WindowEvent e) {
         // TODO add your code here
+
+
         windowStartInit();
         menuKeyInit();
+
     }
 
 
@@ -234,75 +274,75 @@ public class jFormGUI extends JFrame {
 
     private void IPCopybuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REip);
-        CopyEcholabel.setText("复制IP正则表达式成功\r\n内容为：" + ReController.REip);
+        copyEchoText.init(regularUtls.REHOST);
+        CopyEcholabel.setText("复制IP正则表达式成功\r\n内容为：" + regularUtls.REHOST);
     }
 
     private void URLCopybuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REurl);
-        CopyEcholabel.setText("复制URL正则表达式成功\r\n内容为：" + ReController.REurl);
+        copyEchoText.init(regularUtls.REurl);
+        CopyEcholabel.setText("复制URL正则表达式成功\r\n内容为：" + regularUtls.REurl);
     }
 
     private void URLPathbuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REurlPath);
-        CopyEcholabel.setText("复制URL+Path正则表达式成功\r\n内容为：" + ReController.REurlPath);
+        copyEchoText.init(regularUtls.REurlPath);
+        CopyEcholabel.setText("复制URL+Path正则表达式成功\r\n内容为：" + regularUtls.REurlPath);
     }
 
     private void URLPortbuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REurlPort);
-        CopyEcholabel.setText("复制URL+port正则表达式成功\r\n内容为：" + ReController.REurlPort);
+        copyEchoText.init(regularUtls.REurlPort);
+        CopyEcholabel.setText("复制URL+port正则表达式成功\r\n内容为：" + regularUtls.REurlPort);
     }
 
     private void AliyunaAccessKeyMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAliyunAccessKey);
-        CopyEcholabel.setText("复制AliyunAccessKey正则表达式成功\r\n内容为：" + ReController.REAliyunAccessKey);
+        copyEchoText.init(regularUtls.REAliyunAccessKey);
+        CopyEcholabel.setText("复制AliyunAccessKey正则表达式成功\r\n内容为：" + regularUtls.REAliyunAccessKey);
     }
 
     private void AliyunSecretKeyMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAliyunSecretKey);
-        CopyEcholabel.setText("复制AliyunSecretKey正则表达式成功\r\n内容为：" + ReController.REAliyunSecretKey);
+        copyEchoText.init(regularUtls.REAliyunSecretKey);
+        CopyEcholabel.setText("复制AliyunSecretKey正则表达式成功\r\n内容为：" + regularUtls.REAliyunSecretKey);
     }
 
     private void AliyunOssUrlMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAliyunOssUrl);
-        CopyEcholabel.setText("复制AliyunOssUrl正则表达式成功\r\n内容为：" + ReController.REAliyunOssUrl);
+        copyEchoText.init(regularUtls.REAliyunOssUrl);
+        CopyEcholabel.setText("复制AliyunOssUrl正则表达式成功\r\n内容为：" + regularUtls.REAliyunOssUrl);
     }
 
     private void AWSAccessKeyIdMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAWS_AccessKeyId);
-        CopyEcholabel.setText("复制AWS_AccessKeyId正则表达式成功\r\n内容为：" + ReController.REAWS_AccessKeyId);
+        copyEchoText.init(regularUtls.REAWS_AccessKeyId);
+        CopyEcholabel.setText("复制AWS_AccessKeyId正则表达式成功\r\n内容为：" + regularUtls.REAWS_AccessKeyId);
     }
 
     private void AWSAuthTokenMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAWS_AuthToken);
-        CopyEcholabel.setText("复制AWS_AuthToken正则表达式成功\r\n内容为：" + ReController.REAWS_AuthToken);
+        copyEchoText.init(regularUtls.REAWS_AuthToken);
+        CopyEcholabel.setText("复制AWS_AuthToken正则表达式成功\r\n内容为：" + regularUtls.REAWS_AuthToken);
     }
 
     private void AWSURLMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.REAWS_url);
-        CopyEcholabel.setText("复制AWS_url正则表达式成功\r\n内容为：" + ReController.REAWS_url);
+        copyEchoText.init(regularUtls.REAWS_url);
+        CopyEcholabel.setText("复制AWS_url正则表达式成功\r\n内容为：" + regularUtls.REAWS_url);
     }
 
 
     private void SSHkeyMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.RESSH_key);
-        CopyEcholabel.setText("复制SSH_key正则表达式成功\r\n内容为：" + ReController.RESSH_key);
+        copyEchoText.init(regularUtls.RESSH_key);
+        CopyEcholabel.setText("复制SSH_key正则表达式成功\r\n内容为：" + regularUtls.RESSH_key);
     }
 
     private void RSAKEYbuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(ReController.RErsa_key);
-        CopyEcholabel.setText("复制rsa_key正则表达式成功\r\n内容为：" + ReController.RErsa_key);
+        copyEchoText.init(regularUtls.RErsa_key);
+        CopyEcholabel.setText("复制rsa_key正则表达式成功\r\n内容为：" + regularUtls.RErsa_key);
     }
 
     private void CopyPasswordbuttonMouseClicked(MouseEvent e) {
@@ -323,7 +363,7 @@ public class jFormGUI extends JFrame {
 
     private void msfCopyRootButton2MouseClicked(MouseEvent e) {
         // TODO add your code here
-        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), LhostValue.getText(), LportValue.getText(), sessionIdTextField.getText());
+        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), sessionIdTextField.getText());
         copyEchoText.init(rootCommand);
         msfRootTextArea.setText(rootCommand);
     }
@@ -351,19 +391,18 @@ public class jFormGUI extends JFrame {
     private void ReBash1ButtonMouseClicked(MouseEvent e) {
         // TODO add your code here
         copyEchoText.init(Bash1TextArea.getText());
-        ReCopyEcholabel.setText("复制 Bash1 成功");
     }
 
     private void ReBash2ButtonMouseClicked(MouseEvent e) {
         // TODO add your code here
         copyEchoText.init(Bash2TextArea.getText());
-        ReCopyEcholabel.setText("复制 Bash2 成功");
+
     }
 
     private void ReJavaBashbuttonMouseClicked(MouseEvent e) {
         // TODO add your code here
-        copyEchoText.init(JavaBashTextArea.getText());
-        ReCopyEcholabel.setText("复制 JavaBash 成功");
+        copyEchoText.init(JavaBaseOtputTextField.getText());
+
     }
 
     private void msfCopyHexButtonMouseClicked(MouseEvent e) {
@@ -445,7 +484,7 @@ public class jFormGUI extends JFrame {
 
     private void sessionIdTextFieldKeyReleased(KeyEvent e) {
         // TODO add your code here
-        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), LhostValue.getText(), LportValue.getText(), sessionIdTextField.getText());
+        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), sessionIdTextField.getText());
         copyEchoText.init(rootCommand);
         msfRootTextArea.setText(rootCommand);
 
@@ -453,7 +492,7 @@ public class jFormGUI extends JFrame {
 
     private void msfPayloadCopyTextFieldKeyReleased(KeyEvent e) {
         // TODO add your code here
-        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), LhostValue.getText(), LportValue.getText(), sessionIdTextField.getText());
+        String rootCommand = MetasploitController.RootCommand(msfPayloadCopyTextField.getText(), sessionIdTextField.getText());
         copyEchoText.init(rootCommand);
         msfRootTextArea.setText(rootCommand);
     }
@@ -471,10 +510,6 @@ public class jFormGUI extends JFrame {
         unicodeDeCodeTextArea.setText(unicodeDeCodestr);
     }
 
-
-    public JTextField getLhostValue() {
-        return LhostValue;
-    }
 
     private void HistoryLhostValueJListMouseClicked(MouseEvent e) {
         // TODO add your code here
@@ -605,7 +640,7 @@ public class jFormGUI extends JFrame {
     }
 
     private void saveMenuButtonMouseClicked(MouseEvent e) {
-        // TODO add your code here
+
         if (!regularUtls.reHost(LhostValue.getText())) {
             JOptionPane.showMessageDialog(null, "保存失败！ LHOST 输入非法！\r\n范围：0.0.0.0~255.255.255.255", "提示", JOptionPane.ERROR_MESSAGE);
         } else if (!regularUtls.rePort(LportValue.getText())) {
@@ -614,9 +649,11 @@ public class jFormGUI extends JFrame {
             JOptionPane.showMessageDialog(null, "保存失败！ RHOST 输入非法！\r\n范围：0.0.0.0~255.255.255.255", "提示", JOptionPane.ERROR_MESSAGE);
         } else if (!regularUtls.rePort(RportVaule.getText()) || RportVaule.getText() == null) {
             JOptionPane.showMessageDialog(null, "保存失败！ RPORT 输入非法！\r\n范围：1~65535", "提示", JOptionPane.ERROR_MESSAGE);
+        } else if (FileNameVaule.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "保存失败！ FielName 不能为空", "提示", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "保存成功！\r\n请不要删除 data.db 文件", "提示", JOptionPane.INFORMATION_MESSAGE);
             saveMenuData();
+            JOptionPane.showMessageDialog(null, "保存成功！\r\n请不要删除 data.db 文件", "提示", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
@@ -627,7 +664,7 @@ public class jFormGUI extends JFrame {
 
     private void AboutOptions(ActionEvent e) {
         // TODO add your code here
-        JOptionPane.showMessageDialog(null, VersionString + GitHubString + AuthorString, "关于", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, MainJFormGUI.VersionString + GitHubString + AuthorString, "关于", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
@@ -640,10 +677,129 @@ public class jFormGUI extends JFrame {
     }
 
 
+    private void ReCopyMasscanButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        copyEchoText.init(ReMasscanTextField.getText());
+        ReCopySelabel.setText("复制成功~");
+
+
+    }
+
+    private void ReResetButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        ReInputVauletextArea.setText("");
+        ReMasscanTextField.setText("");
+        ReCopySelabel.setText("");
+        ReIPPortFTextArea.setText("");
+    }
+
+    private void ReInputVauletextAreaCaretUpdate(CaretEvent e) {
+        // TODO add your code here
+        String text = ReInputVauletextArea.getText();
+        String masscaninit = regularUtls.Masscaninit(text);
+        ReMasscanTextField.setText(masscaninit);
+        ReIPPortFTextArea.setText("");
+        List<String> result = regularUtls.IPAndPortExtractor(text);
+        for (String str : result) {
+            System.out.println(str);
+            ReIPPortFTextArea.append(str + "\n");
+        }
+
+    }
+
+    private void ipLongIPButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        String text = ipLongInputField.getText();
+        ipLongOutputTextField.setText(ipAddressUtls.longToIP(Long.parseLong(text)));
+    }
+
+    private void ipLongnNumButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        String text = ipLongInputField.getText();
+        ipLongOutputTextField.setText(ipAddressUtls.ipToLonginit(text));
+    }
+
+    private void ipLongSettingButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+
+        String text = LhostValue.getText();
+        if (regularUtls.reHost(text)) {
+            ipLongOutputTextField.setText(ipAddressUtls.ipToLonginit(text));
+            LhostValue.setText(ipAddressUtls.ipToLonginit(text));
+            menuKeyInit();
+        } else {
+            JOptionPane.showMessageDialog(null, "LHOST 输入非法！\n" +
+                    "范围：0.0.0.0~255.255.255.255", "提示", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    private void ipLongRenewButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        String text = LhostValue.getText();
+        ipLongOutputTextField.setText(ipAddressUtls.longToIP(Long.parseLong(text)));
+        LhostValue.setText(ipAddressUtls.longToIP(Long.parseLong(text)));
+        menuKeyInit();
+
+    }
+
+    private void ipAddressSwitchButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        String text = ipAddressTextField.getText();
+        HashMap<Integer, String> sites = ipAddressUtls.CIDRConverter(text);
+        ipAddressSubNetlabel.setText(sites.get(1));
+        ipAddressNetworkdlabel.setText(sites.get(2));
+        ipAddressStartLabel.setText(sites.get(3));
+        ipAddressEndLabel.setText(sites.get(4));
+        ipAddressTotalIpLabel.setText(sites.get(5));
+    }
+
+    private void Bash3TCPButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        copyEchoText.init(Bash3TCPTextField.getText());
+    }
+
+    private void JavaBaseInputTextFieldKeyReleased(KeyEvent e) {
+        // TODO add your code here
+        String inputString = JavaBaseInputTextField.getText();
+        JavaBaseOtputTextField.setText(enCodeUtls.JavaEncode(enCodeUtls.base64Encode(inputString)));
+        menuKeyInit();
+    }
+
+    private void JavaBaseInputTextFieldKeyPressed(KeyEvent e) {
+        // TODO add your code here
+        String inputString = JavaBaseInputTextField.getText();
+        JavaBaseOtputTextField.setText(enCodeUtls.JavaEncode(enCodeUtls.base64Encode(inputString)));
+    }
+
+    private void ReverseAwkCopyButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        String text = ReverseAwkTextField.getText();
+        copyEchoText.init(text);
+    }
+
+    public JTextField getLhostValue() {
+        return LhostValue;
+    }
+
+    private void ReIPPortCopyButtonMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        copyEchoText.init(ReIPPortFTextArea.getText());
+
+    }
+
+    private void FaEXP1TextAreaKeyPressed(KeyEvent e) {
+        // TODO add your code here
+        copyEchoText.init(FaEXP1TextArea.getText());
+    }
+
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         ResourceBundle bundle = ResourceBundle.getBundle("jFormGUI");
         AboutOptionsMenuBar = new JMenuBar();
+        menu1 = new JMenu();
+        menuItem1 = new JMenuItem();
         AboutOptionsMenu = new JMenu();
         AboutOptionsMenuItem = new JMenuItem();
         inputFields = new JPanel();
@@ -662,6 +818,9 @@ public class jFormGUI extends JFrame {
         HistoryRportValueJList = new JList();
         saveMenuButton = new JButton();
         Delectbutton = new JButton();
+        ipLongSettingButton = new JButton();
+        label73 = new JLabel();
+        ipLongRenewButton = new JButton();
         LPanel1 = new JPanel();
         LHOST = new JLabel();
         LPORT = new JLabel();
@@ -687,12 +846,20 @@ public class jFormGUI extends JFrame {
         label35 = new JLabel();
         Bash1TextArea = new JTextField();
         Bash2TextArea = new JTextField();
-        label43 = new JLabel();
-        JavaBashTextArea = new JTextField();
         ReBash1Button = new JButton();
         ReBash2Button = new JButton();
-        ReJavaBashbutton = new JButton();
-        ReCopyEcholabel = new JLabel();
+        label76 = new JLabel();
+        Bash3TCPTextField = new JTextField();
+        Bash3TCPButton = new JButton();
+        Bash1UDPTextField = new JTextField();
+        Bash2UDPTextField = new JTextField();
+        label84 = new JLabel();
+        label85 = new JLabel();
+        button2 = new JButton();
+        button5 = new JButton();
+        AwkOptions = new JPanel();
+        ReverseAwkTextField = new JTextField();
+        ReverseAwkCopyButton = new JButton();
         RCEMenu = new JPanel();
         CurlOption = new JTabbedPane();
         panel3 = new JPanel();
@@ -804,8 +971,8 @@ public class jFormGUI extends JFrame {
         label41 = new JLabel();
         LoDNSlogTextField = new JTextField();
         REs = new JPanel();
-        tabbedPane3 = new JTabbedPane();
-        panel9 = new JPanel();
+        ResTabbedPane = new JTabbedPane();
+        ReExpressionPanel = new JPanel();
         label11 = new JLabel();
         label12 = new JLabel();
         IPCopybutton = new JButton();
@@ -826,6 +993,19 @@ public class jFormGUI extends JFrame {
         label16 = new JLabel();
         SSHkey = new JButton();
         RSAKEYbutton = new JButton();
+        ReMasscanPanel = new JPanel();
+        label68 = new JLabel();
+        scrollPane9 = new JScrollPane();
+        ReInputVauletextArea = new JTextArea();
+        ReMasscanTextField = new JTextField();
+        label69 = new JLabel();
+        ReResetButton = new JButton();
+        ReCopyMasscanButton = new JButton();
+        ReCopySelabel = new JLabel();
+        label70 = new JLabel();
+        scrollPane19 = new JScrollPane();
+        ReIPPortFTextArea = new JTextArea();
+        ReIPPortCopyButton = new JButton();
         DeCodeAndEnCodes = new JPanel();
         DeAndEnCodeBase64s = new JTabbedPane();
         Base64DeCodes = new JPanel();
@@ -863,6 +1043,13 @@ public class jFormGUI extends JFrame {
         unicodeEnCodeButton = new JButton();
         unicodeDeCodeButton = new JButton();
         label64 = new JLabel();
+        JavaBase64OptionsPanel = new JPanel();
+        label43 = new JLabel();
+        label78 = new JLabel();
+        JavaBaseInputTextField = new JTextField();
+        label82 = new JLabel();
+        JavaBaseOtputTextField = new JTextField();
+        ReJavaBashbutton = new JButton();
         RandomMenu = new JTabbedPane();
         RaPasswordOptions = new JPanel();
         RaPasswordpanel = new JPanel();
@@ -875,7 +1062,7 @@ public class jFormGUI extends JFrame {
         PasswordLens = new JSpinner();
         label4 = new JLabel();
         CopyPasswordbutton = new JButton();
-        panel1 = new JPanel();
+        timeStampOptions = new JPanel();
         label61 = new JLabel();
         timeStampEchoTextField = new JTextField();
         timeStampEchobutton = new JButton();
@@ -889,6 +1076,27 @@ public class jFormGUI extends JFrame {
         button4 = new JButton();
         label65 = new JLabel();
         label66 = new JLabel();
+        ipLongOptions = new JPanel();
+        ipLongInputField = new JTextField();
+        ipLongOutputTextField = new JTextField();
+        label71 = new JLabel();
+        label72 = new JLabel();
+        ipLongIPButton = new JButton();
+        ipLongnNumButton = new JButton();
+        ipAddressOptions = new JPanel();
+        ipAddressTextField = new JTextField();
+        label74 = new JLabel();
+        ipAddressSwitchButton = new JButton();
+        label75 = new JLabel();
+        ipAddressSubNetlabel = new JLabel();
+        label77 = new JLabel();
+        ipAddressNetworkdlabel = new JLabel();
+        label79 = new JLabel();
+        ipAddressStartLabel = new JLabel();
+        label81 = new JLabel();
+        ipAddressEndLabel = new JLabel();
+        label83 = new JLabel();
+        ipAddressTotalIpLabel = new JLabel();
         CustomEditMenu = new JTabbedPane();
         CustomEditOptions = new JScrollPane();
         CustomEdit1TextArea = new JTextArea();
@@ -910,6 +1118,16 @@ public class jFormGUI extends JFrame {
 
         //======== AboutOptionsMenuBar ========
         {
+
+            //======== menu1 ========
+            {
+                menu1.setText(bundle.getString("menu1.text"));
+
+                //---- menuItem1 ----
+                menuItem1.setText(bundle.getString("menuItem1.text"));
+                menu1.add(menuItem1);
+            }
+            AboutOptionsMenuBar.add(menu1);
 
             //======== AboutOptionsMenu ========
             {
@@ -1081,6 +1299,33 @@ public class jFormGUI extends JFrame {
                 RPanel2.add(Delectbutton);
                 Delectbutton.setBounds(new Rectangle(new Point(670, 5), Delectbutton.getPreferredSize()));
 
+                //---- ipLongSettingButton ----
+                ipLongSettingButton.setText(bundle.getString("ipLongSettingButton.text"));
+                ipLongSettingButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        ipLongSettingButtonMouseClicked(e);
+                    }
+                });
+                RPanel2.add(ipLongSettingButton);
+                ipLongSettingButton.setBounds(new Rectangle(new Point(570, 70), ipLongSettingButton.getPreferredSize()));
+
+                //---- label73 ----
+                label73.setText(bundle.getString("label73.text"));
+                RPanel2.add(label73);
+                label73.setBounds(new Rectangle(new Point(570, 45), label73.getPreferredSize()));
+
+                //---- ipLongRenewButton ----
+                ipLongRenewButton.setText(bundle.getString("ipLongRenewButton.text"));
+                ipLongRenewButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        ipLongRenewButtonMouseClicked(e);
+                    }
+                });
+                RPanel2.add(ipLongRenewButton);
+                ipLongRenewButton.setBounds(new Rectangle(new Point(670, 70), ipLongRenewButton.getPreferredSize()));
+
                 {
                     // compute preferred size
                     Dimension preferredSize = new Dimension();
@@ -1097,7 +1342,7 @@ public class jFormGUI extends JFrame {
                 }
             }
             inputFields.add(RPanel2);
-            RPanel2.setBounds(10, 95, 785, 105);
+            RPanel2.setBounds(10, 95, 800, 105);
 
             //======== LPanel1 ========
             {
@@ -1323,18 +1568,11 @@ public class jFormGUI extends JFrame {
                         //---- label35 ----
                         label35.setText(bundle.getString("label35.text"));
                         BashOptions.add(label35);
-                        label35.setBounds(new Rectangle(new Point(25, 75), label35.getPreferredSize()));
+                        label35.setBounds(new Rectangle(new Point(25, 70), label35.getPreferredSize()));
                         BashOptions.add(Bash1TextArea);
                         Bash1TextArea.setBounds(20, 35, 565, Bash1TextArea.getPreferredSize().height);
                         BashOptions.add(Bash2TextArea);
-                        Bash2TextArea.setBounds(20, 100, 565, Bash2TextArea.getPreferredSize().height);
-
-                        //---- label43 ----
-                        label43.setText(bundle.getString("label43.text"));
-                        BashOptions.add(label43);
-                        label43.setBounds(new Rectangle(new Point(25, 145), label43.getPreferredSize()));
-                        BashOptions.add(JavaBashTextArea);
-                        JavaBashTextArea.setBounds(20, 175, 565, JavaBashTextArea.getPreferredSize().height);
+                        Bash2TextArea.setBounds(20, 90, 565, Bash2TextArea.getPreferredSize().height);
 
                         //---- ReBash1Button ----
                         ReBash1Button.setText(bundle.getString("ReBash1Button.text"));
@@ -1356,20 +1594,49 @@ public class jFormGUI extends JFrame {
                             }
                         });
                         BashOptions.add(ReBash2Button);
-                        ReBash2Button.setBounds(new Rectangle(new Point(605, 100), ReBash2Button.getPreferredSize()));
+                        ReBash2Button.setBounds(new Rectangle(new Point(605, 90), ReBash2Button.getPreferredSize()));
 
-                        //---- ReJavaBashbutton ----
-                        ReJavaBashbutton.setText(bundle.getString("ReJavaBashbutton.text"));
-                        ReJavaBashbutton.addMouseListener(new MouseAdapter() {
+                        //---- label76 ----
+                        label76.setText(bundle.getString("label76.text"));
+                        BashOptions.add(label76);
+                        label76.setBounds(new Rectangle(new Point(25, 130), label76.getPreferredSize()));
+                        BashOptions.add(Bash3TCPTextField);
+                        Bash3TCPTextField.setBounds(20, 150, 565, Bash3TCPTextField.getPreferredSize().height);
+
+                        //---- Bash3TCPButton ----
+                        Bash3TCPButton.setText(bundle.getString("Bash3TCPButton.text"));
+                        Bash3TCPButton.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
-                                ReJavaBashbuttonMouseClicked(e);
+                                Bash3TCPButtonMouseClicked(e);
                             }
                         });
-                        BashOptions.add(ReJavaBashbutton);
-                        ReJavaBashbutton.setBounds(new Rectangle(new Point(605, 175), ReJavaBashbutton.getPreferredSize()));
-                        BashOptions.add(ReCopyEcholabel);
-                        ReCopyEcholabel.setBounds(25, 315, 655, 30);
+                        BashOptions.add(Bash3TCPButton);
+                        Bash3TCPButton.setBounds(new Rectangle(new Point(605, 150), Bash3TCPButton.getPreferredSize()));
+                        BashOptions.add(Bash1UDPTextField);
+                        Bash1UDPTextField.setBounds(20, 215, 565, Bash1UDPTextField.getPreferredSize().height);
+                        BashOptions.add(Bash2UDPTextField);
+                        Bash2UDPTextField.setBounds(25, 285, 560, Bash2UDPTextField.getPreferredSize().height);
+
+                        //---- label84 ----
+                        label84.setText(bundle.getString("label84.text"));
+                        BashOptions.add(label84);
+                        label84.setBounds(new Rectangle(new Point(25, 190), label84.getPreferredSize()));
+
+                        //---- label85 ----
+                        label85.setText(bundle.getString("label85.text"));
+                        BashOptions.add(label85);
+                        label85.setBounds(new Rectangle(new Point(25, 260), label85.getPreferredSize()));
+
+                        //---- button2 ----
+                        button2.setText(bundle.getString("button2.text"));
+                        BashOptions.add(button2);
+                        button2.setBounds(new Rectangle(new Point(610, 215), button2.getPreferredSize()));
+
+                        //---- button5 ----
+                        button5.setText(bundle.getString("button5.text"));
+                        BashOptions.add(button5);
+                        button5.setBounds(new Rectangle(new Point(610, 285), button5.getPreferredSize()));
 
                         {
                             // compute preferred size
@@ -1387,6 +1654,40 @@ public class jFormGUI extends JFrame {
                         }
                     }
                     ReverseMenu.addTab(bundle.getString("BashOptions.tab.title"), BashOptions);
+
+                    //======== AwkOptions ========
+                    {
+                        AwkOptions.setLayout(null);
+                        AwkOptions.add(ReverseAwkTextField);
+                        ReverseAwkTextField.setBounds(30, 50, 575, ReverseAwkTextField.getPreferredSize().height);
+
+                        //---- ReverseAwkCopyButton ----
+                        ReverseAwkCopyButton.setText(bundle.getString("ReverseAwkCopyButton.text"));
+                        ReverseAwkCopyButton.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                ReverseAwkCopyButtonMouseClicked(e);
+                            }
+                        });
+                        AwkOptions.add(ReverseAwkCopyButton);
+                        ReverseAwkCopyButton.setBounds(new Rectangle(new Point(630, 50), ReverseAwkCopyButton.getPreferredSize()));
+
+                        {
+                            // compute preferred size
+                            Dimension preferredSize = new Dimension();
+                            for(int i = 0; i < AwkOptions.getComponentCount(); i++) {
+                                Rectangle bounds = AwkOptions.getComponent(i).getBounds();
+                                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                            }
+                            Insets insets = AwkOptions.getInsets();
+                            preferredSize.width += insets.right;
+                            preferredSize.height += insets.bottom;
+                            AwkOptions.setMinimumSize(preferredSize);
+                            AwkOptions.setPreferredSize(preferredSize);
+                        }
+                    }
+                    ReverseMenu.addTab(bundle.getString("AwkOptions.tab.title"), AwkOptions);
                 }
                 JtabbedPan11.addTab(bundle.getString("ReverseMenu.tab.title"), ReverseMenu);
 
@@ -1480,7 +1781,7 @@ public class jFormGUI extends JFrame {
                                 scrollPane12.setViewportView(PythonTextArea);
                             }
                             PythonOption.add(scrollPane12);
-                            scrollPane12.setBounds(20, 25, 665, 145);
+                            scrollPane12.setBounds(40, 30, 665, 145);
 
                             {
                                 // compute preferred size
@@ -2072,6 +2373,14 @@ public class jFormGUI extends JFrame {
 
                             //======== FaEXP1 ========
                             {
+
+                                //---- FaEXP1TextArea ----
+                                FaEXP1TextArea.addKeyListener(new KeyAdapter() {
+                                    @Override
+                                    public void keyPressed(KeyEvent e) {
+                                        FaEXP1TextAreaKeyPressed(e);
+                                    }
+                                });
                                 FaEXP1.setViewportView(FaEXP1TextArea);
                             }
                             FaEXP1Options.add(FaEXP1);
@@ -2166,16 +2475,16 @@ public class jFormGUI extends JFrame {
                 {
                     REs.setLayout(null);
 
-                    //======== tabbedPane3 ========
+                    //======== ResTabbedPane ========
                     {
-                        tabbedPane3.setTabPlacement(SwingConstants.LEFT);
+                        ResTabbedPane.setTabPlacement(SwingConstants.LEFT);
 
-                        //======== panel9 ========
+                        //======== ReExpressionPanel ========
                         {
-                            panel9.setLayout(null);
-                            panel9.add(label11);
+                            ReExpressionPanel.setLayout(null);
+                            ReExpressionPanel.add(label11);
                             label11.setBounds(new Rectangle(new Point(25, 40), label11.getPreferredSize()));
-                            panel9.add(label12);
+                            ReExpressionPanel.add(label12);
                             label12.setBounds(new Rectangle(new Point(15, 65), label12.getPreferredSize()));
 
                             //---- IPCopybutton ----
@@ -2186,12 +2495,12 @@ public class jFormGUI extends JFrame {
                                     IPCopybuttonMouseClicked(e);
                                 }
                             });
-                            panel9.add(IPCopybutton);
+                            ReExpressionPanel.add(IPCopybutton);
                             IPCopybutton.setBounds(new Rectangle(new Point(15, 35), IPCopybutton.getPreferredSize()));
 
                             //---- CopyEcholabel ----
                             CopyEcholabel.setAutoscrolls(true);
-                            panel9.add(CopyEcholabel);
+                            ReExpressionPanel.add(CopyEcholabel);
                             CopyEcholabel.setBounds(20, 285, 630, 45);
 
                             //---- URLCopybutton ----
@@ -2202,7 +2511,7 @@ public class jFormGUI extends JFrame {
                                     URLCopybuttonMouseClicked(e);
                                 }
                             });
-                            panel9.add(URLCopybutton);
+                            ReExpressionPanel.add(URLCopybutton);
                             URLCopybutton.setBounds(new Rectangle(new Point(115, 35), URLCopybutton.getPreferredSize()));
 
                             //---- URLPathbutton ----
@@ -2213,7 +2522,7 @@ public class jFormGUI extends JFrame {
                                     URLPathbuttonMouseClicked(e);
                                 }
                             });
-                            panel9.add(URLPathbutton);
+                            ReExpressionPanel.add(URLPathbutton);
                             URLPathbutton.setBounds(new Rectangle(new Point(240, 35), URLPathbutton.getPreferredSize()));
 
                             //---- URLPortbutton ----
@@ -2224,7 +2533,7 @@ public class jFormGUI extends JFrame {
                                     URLPortbuttonMouseClicked(e);
                                 }
                             });
-                            panel9.add(URLPortbutton);
+                            ReExpressionPanel.add(URLPortbutton);
                             URLPortbutton.setBounds(new Rectangle(new Point(350, 35), URLPortbutton.getPreferredSize()));
 
                             //---- AliyunaAccessKey ----
@@ -2235,22 +2544,22 @@ public class jFormGUI extends JFrame {
                                     AliyunaAccessKeyMouseClicked(e);
                                 }
                             });
-                            panel9.add(AliyunaAccessKey);
+                            ReExpressionPanel.add(AliyunaAccessKey);
                             AliyunaAccessKey.setBounds(new Rectangle(new Point(15, 90), AliyunaAccessKey.getPreferredSize()));
 
                             //---- label10 ----
                             label10.setText(bundle.getString("label10.text"));
-                            panel9.add(label10);
+                            ReExpressionPanel.add(label10);
                             label10.setBounds(new Rectangle(new Point(20, 10), label10.getPreferredSize()));
 
                             //---- label13 ----
                             label13.setText(bundle.getString("label13.text"));
-                            panel9.add(label13);
+                            ReExpressionPanel.add(label13);
                             label13.setBounds(new Rectangle(new Point(120, 10), label13.getPreferredSize()));
 
                             //---- label14 ----
                             label14.setText(bundle.getString("label14.text"));
-                            panel9.add(label14);
+                            ReExpressionPanel.add(label14);
                             label14.setBounds(20, 70, 59, 17);
 
                             //---- AliyunSecretKey ----
@@ -2261,7 +2570,7 @@ public class jFormGUI extends JFrame {
                                     AliyunSecretKeyMouseClicked(e);
                                 }
                             });
-                            panel9.add(AliyunSecretKey);
+                            ReExpressionPanel.add(AliyunSecretKey);
                             AliyunSecretKey.setBounds(new Rectangle(new Point(115, 90), AliyunSecretKey.getPreferredSize()));
 
                             //---- AliyunOssUrl ----
@@ -2272,12 +2581,12 @@ public class jFormGUI extends JFrame {
                                     AliyunOssUrlMouseClicked(e);
                                 }
                             });
-                            panel9.add(AliyunOssUrl);
+                            ReExpressionPanel.add(AliyunOssUrl);
                             AliyunOssUrl.setBounds(new Rectangle(new Point(215, 90), AliyunOssUrl.getPreferredSize()));
 
                             //---- label15 ----
                             label15.setText(bundle.getString("label15.text"));
-                            panel9.add(label15);
+                            ReExpressionPanel.add(label15);
                             label15.setBounds(new Rectangle(new Point(20, 125), label15.getPreferredSize()));
 
                             //---- AWSAccessKeyId ----
@@ -2288,7 +2597,7 @@ public class jFormGUI extends JFrame {
                                     AWSAccessKeyIdMouseClicked(e);
                                 }
                             });
-                            panel9.add(AWSAccessKeyId);
+                            ReExpressionPanel.add(AWSAccessKeyId);
                             AWSAccessKeyId.setBounds(new Rectangle(new Point(15, 150), AWSAccessKeyId.getPreferredSize()));
 
                             //---- AWSAuthToken ----
@@ -2299,7 +2608,7 @@ public class jFormGUI extends JFrame {
                                     AWSAuthTokenMouseClicked(e);
                                 }
                             });
-                            panel9.add(AWSAuthToken);
+                            ReExpressionPanel.add(AWSAuthToken);
                             AWSAuthToken.setBounds(new Rectangle(new Point(130, 150), AWSAuthToken.getPreferredSize()));
 
                             //---- AWSURL ----
@@ -2310,12 +2619,12 @@ public class jFormGUI extends JFrame {
                                     AWSURLMouseClicked(e);
                                 }
                             });
-                            panel9.add(AWSURL);
+                            ReExpressionPanel.add(AWSURL);
                             AWSURL.setBounds(new Rectangle(new Point(245, 150), AWSURL.getPreferredSize()));
 
                             //---- label16 ----
                             label16.setText(bundle.getString("label16.text"));
-                            panel9.add(label16);
+                            ReExpressionPanel.add(label16);
                             label16.setBounds(new Rectangle(new Point(20, 185), label16.getPreferredSize()));
 
                             //---- SSHkey ----
@@ -2326,7 +2635,7 @@ public class jFormGUI extends JFrame {
                                     SSHkeyMouseClicked(e);
                                 }
                             });
-                            panel9.add(SSHkey);
+                            ReExpressionPanel.add(SSHkey);
                             SSHkey.setBounds(new Rectangle(new Point(15, 210), SSHkey.getPreferredSize()));
 
                             //---- RSAKEYbutton ----
@@ -2337,28 +2646,121 @@ public class jFormGUI extends JFrame {
                                     RSAKEYbuttonMouseClicked(e);
                                 }
                             });
-                            panel9.add(RSAKEYbutton);
+                            ReExpressionPanel.add(RSAKEYbutton);
                             RSAKEYbutton.setBounds(new Rectangle(new Point(110, 210), RSAKEYbutton.getPreferredSize()));
 
                             {
                                 // compute preferred size
                                 Dimension preferredSize = new Dimension();
-                                for(int i = 0; i < panel9.getComponentCount(); i++) {
-                                    Rectangle bounds = panel9.getComponent(i).getBounds();
+                                for(int i = 0; i < ReExpressionPanel.getComponentCount(); i++) {
+                                    Rectangle bounds = ReExpressionPanel.getComponent(i).getBounds();
                                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
                                 }
-                                Insets insets = panel9.getInsets();
+                                Insets insets = ReExpressionPanel.getInsets();
                                 preferredSize.width += insets.right;
                                 preferredSize.height += insets.bottom;
-                                panel9.setMinimumSize(preferredSize);
-                                panel9.setPreferredSize(preferredSize);
+                                ReExpressionPanel.setMinimumSize(preferredSize);
+                                ReExpressionPanel.setPreferredSize(preferredSize);
                             }
                         }
-                        tabbedPane3.addTab(bundle.getString("panel9.tab.title"), panel9);
+                        ResTabbedPane.addTab(bundle.getString("ReExpressionPanel.tab.title"), ReExpressionPanel);
+
+                        //======== ReMasscanPanel ========
+                        {
+                            ReMasscanPanel.setLayout(null);
+
+                            //---- label68 ----
+                            label68.setText(bundle.getString("label68.text"));
+                            ReMasscanPanel.add(label68);
+                            label68.setBounds(25, 15, label68.getPreferredSize().width, 15);
+
+                            //======== scrollPane9 ========
+                            {
+
+                                //---- ReInputVauletextArea ----
+                                ReInputVauletextArea.addCaretListener(e -> ReInputVauletextAreaCaretUpdate(e));
+                                scrollPane9.setViewportView(ReInputVauletextArea);
+                            }
+                            ReMasscanPanel.add(scrollPane9);
+                            scrollPane9.setBounds(20, 70, 360, 220);
+
+                            //---- ReMasscanTextField ----
+                            ReMasscanTextField.setText(bundle.getString("ReMasscanTextField.text"));
+                            ReMasscanPanel.add(ReMasscanTextField);
+                            ReMasscanTextField.setBounds(410, 65, 165, ReMasscanTextField.getPreferredSize().height);
+
+                            //---- label69 ----
+                            label69.setText(bundle.getString("label69.text"));
+                            ReMasscanPanel.add(label69);
+                            label69.setBounds(new Rectangle(new Point(410, 30), label69.getPreferredSize()));
+
+                            //---- ReResetButton ----
+                            ReResetButton.setText(bundle.getString("ReResetButton.text"));
+                            ReResetButton.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                    ReResetButtonMouseClicked(e);
+                                }
+                            });
+                            ReMasscanPanel.add(ReResetButton);
+                            ReResetButton.setBounds(new Rectangle(new Point(20, 310), ReResetButton.getPreferredSize()));
+
+                            //---- ReCopyMasscanButton ----
+                            ReCopyMasscanButton.setText(bundle.getString("ReCopyMasscanButton.text"));
+                            ReCopyMasscanButton.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                    ReCopyMasscanButtonMouseClicked(e);
+                                }
+                            });
+                            ReMasscanPanel.add(ReCopyMasscanButton);
+                            ReCopyMasscanButton.setBounds(new Rectangle(new Point(600, 65), ReCopyMasscanButton.getPreferredSize()));
+                            ReMasscanPanel.add(ReCopySelabel);
+                            ReCopySelabel.setBounds(575, 20, 130, 35);
+
+                            //---- label70 ----
+                            label70.setText(bundle.getString("label70.text"));
+                            ReMasscanPanel.add(label70);
+                            label70.setBounds(new Rectangle(new Point(25, 40), label70.getPreferredSize()));
+
+                            //======== scrollPane19 ========
+                            {
+                                scrollPane19.setViewportView(ReIPPortFTextArea);
+                            }
+                            ReMasscanPanel.add(scrollPane19);
+                            scrollPane19.setBounds(410, 140, 195, 190);
+
+                            //---- ReIPPortCopyButton ----
+                            ReIPPortCopyButton.setText(bundle.getString("ReIPPortCopyButton.text"));
+                            ReIPPortCopyButton.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                    ReIPPortCopyButtonMouseClicked(e);
+                                }
+                            });
+                            ReMasscanPanel.add(ReIPPortCopyButton);
+                            ReIPPortCopyButton.setBounds(new Rectangle(new Point(620, 200), ReIPPortCopyButton.getPreferredSize()));
+
+                            {
+                                // compute preferred size
+                                Dimension preferredSize = new Dimension();
+                                for(int i = 0; i < ReMasscanPanel.getComponentCount(); i++) {
+                                    Rectangle bounds = ReMasscanPanel.getComponent(i).getBounds();
+                                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                                }
+                                Insets insets = ReMasscanPanel.getInsets();
+                                preferredSize.width += insets.right;
+                                preferredSize.height += insets.bottom;
+                                ReMasscanPanel.setMinimumSize(preferredSize);
+                                ReMasscanPanel.setPreferredSize(preferredSize);
+                            }
+                        }
+                        ResTabbedPane.addTab(bundle.getString("ReMasscanPanel.tab.title"), ReMasscanPanel);
                     }
-                    REs.add(tabbedPane3);
-                    tabbedPane3.setBounds(0, 0, 770, 385);
+                    REs.add(ResTabbedPane);
+                    ResTabbedPane.setBounds(0, 0, 800, 385);
 
                     {
                         // compute preferred size
@@ -2658,6 +3060,69 @@ public class jFormGUI extends JFrame {
                             }
                         }
                         DeAndEnCodeBase64s.addTab(bundle.getString("UnicodeOptions.tab.title_2"), UnicodeOptions);
+
+                        //======== JavaBase64OptionsPanel ========
+                        {
+                            JavaBase64OptionsPanel.setLayout(null);
+
+                            //---- label43 ----
+                            label43.setText(bundle.getString("label43.text"));
+                            JavaBase64OptionsPanel.add(label43);
+                            label43.setBounds(30, 45, 53, 17);
+
+                            //---- label78 ----
+                            label78.setText(bundle.getString("label78.text"));
+                            JavaBase64OptionsPanel.add(label78);
+                            label78.setBounds(25, 80, 106, 17);
+
+                            //---- JavaBaseInputTextField ----
+                            JavaBaseInputTextField.addKeyListener(new KeyAdapter() {
+                                @Override
+                                public void keyPressed(KeyEvent e) {
+                                    JavaBaseInputTextFieldKeyPressed(e);
+                                }
+                                @Override
+                                public void keyReleased(KeyEvent e) {
+                                    JavaBaseInputTextFieldKeyReleased(e);
+                                }
+                            });
+                            JavaBase64OptionsPanel.add(JavaBaseInputTextField);
+                            JavaBaseInputTextField.setBounds(25, 110, 560, 30);
+
+                            //---- label82 ----
+                            label82.setText(bundle.getString("label82.text"));
+                            JavaBase64OptionsPanel.add(label82);
+                            label82.setBounds(25, 165, 213, 17);
+                            JavaBase64OptionsPanel.add(JavaBaseOtputTextField);
+                            JavaBaseOtputTextField.setBounds(20, 205, 565, 30);
+
+                            //---- ReJavaBashbutton ----
+                            ReJavaBashbutton.setText(bundle.getString("ReJavaBashbutton.text"));
+                            ReJavaBashbutton.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                    ReJavaBashbuttonMouseClicked(e);
+                                }
+                            });
+                            JavaBase64OptionsPanel.add(ReJavaBashbutton);
+                            ReJavaBashbutton.setBounds(600, 205, 78, 30);
+
+                            {
+                                // compute preferred size
+                                Dimension preferredSize = new Dimension();
+                                for(int i = 0; i < JavaBase64OptionsPanel.getComponentCount(); i++) {
+                                    Rectangle bounds = JavaBase64OptionsPanel.getComponent(i).getBounds();
+                                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                                }
+                                Insets insets = JavaBase64OptionsPanel.getInsets();
+                                preferredSize.width += insets.right;
+                                preferredSize.height += insets.bottom;
+                                JavaBase64OptionsPanel.setMinimumSize(preferredSize);
+                                JavaBase64OptionsPanel.setPreferredSize(preferredSize);
+                            }
+                        }
+                        DeAndEnCodeBase64s.addTab(bundle.getString("JavaBase64OptionsPanel.tab.title"), JavaBase64OptionsPanel);
                     }
                     DeCodeAndEnCodes.add(DeAndEnCodeBase64s);
                     DeAndEnCodeBase64s.setBounds(0, 0, 795, 380);
@@ -2777,15 +3242,15 @@ public class jFormGUI extends JFrame {
                     }
                     RandomMenu.addTab(bundle.getString("RaPasswordOptions.tab.title"), RaPasswordOptions);
 
-                    //======== panel1 ========
+                    //======== timeStampOptions ========
                     {
-                        panel1.setLayout(null);
+                        timeStampOptions.setLayout(null);
 
                         //---- label61 ----
                         label61.setText(bundle.getString("label61.text"));
-                        panel1.add(label61);
+                        timeStampOptions.add(label61);
                         label61.setBounds(new Rectangle(new Point(30, 25), label61.getPreferredSize()));
-                        panel1.add(timeStampEchoTextField);
+                        timeStampOptions.add(timeStampEchoTextField);
                         timeStampEchoTextField.setBounds(30, 65, 150, timeStampEchoTextField.getPreferredSize().height);
 
                         //---- timeStampEchobutton ----
@@ -2796,18 +3261,18 @@ public class jFormGUI extends JFrame {
                                 timeStampEchobuttonMouseClicked(e);
                             }
                         });
-                        panel1.add(timeStampEchobutton);
+                        timeStampOptions.add(timeStampEchobutton);
                         timeStampEchobutton.setBounds(new Rectangle(new Point(210, 65), timeStampEchobutton.getPreferredSize()));
-                        panel1.add(timeStampEndTextField);
+                        timeStampOptions.add(timeStampEndTextField);
                         timeStampEndTextField.setBounds(325, 65, 210, timeStampEndTextField.getPreferredSize().height);
 
                         //---- label62 ----
                         label62.setText(bundle.getString("label62.text"));
-                        panel1.add(label62);
+                        timeStampOptions.add(label62);
                         label62.setBounds(new Rectangle(new Point(35, 160), label62.getPreferredSize()));
-                        panel1.add(label63);
+                        timeStampOptions.add(label63);
                         label63.setBounds(new Rectangle(new Point(35, 225), label63.getPreferredSize()));
-                        panel1.add(StampTimeEchoTextField);
+                        timeStampOptions.add(StampTimeEchoTextField);
                         StampTimeEchoTextField.setBounds(30, 195, 150, StampTimeEchoTextField.getPreferredSize().height);
 
                         //---- StampTimeEchoButton ----
@@ -2818,9 +3283,9 @@ public class jFormGUI extends JFrame {
                                 StampTimeEchoButtonMouseClicked(e);
                             }
                         });
-                        panel1.add(StampTimeEchoButton);
+                        timeStampOptions.add(StampTimeEchoButton);
                         StampTimeEchoButton.setBounds(new Rectangle(new Point(210, 195), StampTimeEchoButton.getPreferredSize()));
-                        panel1.add(StampTimeEndTextField);
+                        timeStampOptions.add(StampTimeEndTextField);
                         StampTimeEndTextField.setBounds(320, 195, 205, StampTimeEndTextField.getPreferredSize().height);
 
                         //---- button3 ----
@@ -2831,7 +3296,7 @@ public class jFormGUI extends JFrame {
                                 button3MouseClicked(e);
                             }
                         });
-                        panel1.add(button3);
+                        timeStampOptions.add(button3);
                         button3.setBounds(new Rectangle(new Point(190, 20), button3.getPreferredSize()));
 
                         //---- button4 ----
@@ -2842,35 +3307,166 @@ public class jFormGUI extends JFrame {
                                 button4MouseClicked(e);
                             }
                         });
-                        panel1.add(button4);
+                        timeStampOptions.add(button4);
                         button4.setBounds(new Rectangle(new Point(195, 145), button4.getPreferredSize()));
 
                         //---- label65 ----
                         label65.setText(bundle.getString("label65.text"));
-                        panel1.add(label65);
+                        timeStampOptions.add(label65);
                         label65.setBounds(new Rectangle(new Point(325, 155), label65.getPreferredSize()));
 
                         //---- label66 ----
                         label66.setText(bundle.getString("label66.text"));
-                        panel1.add(label66);
+                        timeStampOptions.add(label66);
                         label66.setBounds(new Rectangle(new Point(335, 30), label66.getPreferredSize()));
 
                         {
                             // compute preferred size
                             Dimension preferredSize = new Dimension();
-                            for(int i = 0; i < panel1.getComponentCount(); i++) {
-                                Rectangle bounds = panel1.getComponent(i).getBounds();
+                            for(int i = 0; i < timeStampOptions.getComponentCount(); i++) {
+                                Rectangle bounds = timeStampOptions.getComponent(i).getBounds();
                                 preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                                 preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
                             }
-                            Insets insets = panel1.getInsets();
+                            Insets insets = timeStampOptions.getInsets();
                             preferredSize.width += insets.right;
                             preferredSize.height += insets.bottom;
-                            panel1.setMinimumSize(preferredSize);
-                            panel1.setPreferredSize(preferredSize);
+                            timeStampOptions.setMinimumSize(preferredSize);
+                            timeStampOptions.setPreferredSize(preferredSize);
                         }
                     }
-                    RandomMenu.addTab(bundle.getString("panel1.tab.title"), panel1);
+                    RandomMenu.addTab(bundle.getString("timeStampOptions.tab.title"), timeStampOptions);
+
+                    //======== ipLongOptions ========
+                    {
+                        ipLongOptions.setLayout(null);
+                        ipLongOptions.add(ipLongInputField);
+                        ipLongInputField.setBounds(40, 80, 210, ipLongInputField.getPreferredSize().height);
+                        ipLongOptions.add(ipLongOutputTextField);
+                        ipLongOutputTextField.setBounds(40, 220, 210, ipLongOutputTextField.getPreferredSize().height);
+
+                        //---- label71 ----
+                        label71.setText(bundle.getString("label71.text"));
+                        ipLongOptions.add(label71);
+                        label71.setBounds(new Rectangle(new Point(45, 50), label71.getPreferredSize()));
+
+                        //---- label72 ----
+                        label72.setText(bundle.getString("label72.text"));
+                        ipLongOptions.add(label72);
+                        label72.setBounds(new Rectangle(new Point(45, 185), label72.getPreferredSize()));
+
+                        //---- ipLongIPButton ----
+                        ipLongIPButton.setText(bundle.getString("ipLongIPButton.text"));
+                        ipLongIPButton.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                ipLongIPButtonMouseClicked(e);
+                            }
+                        });
+                        ipLongOptions.add(ipLongIPButton);
+                        ipLongIPButton.setBounds(new Rectangle(new Point(155, 135), ipLongIPButton.getPreferredSize()));
+
+                        //---- ipLongnNumButton ----
+                        ipLongnNumButton.setText(bundle.getString("ipLongnNumButton.text"));
+                        ipLongnNumButton.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                ipLongnNumButtonMouseClicked(e);
+                            }
+                        });
+                        ipLongOptions.add(ipLongnNumButton);
+                        ipLongnNumButton.setBounds(new Rectangle(new Point(40, 135), ipLongnNumButton.getPreferredSize()));
+
+                        {
+                            // compute preferred size
+                            Dimension preferredSize = new Dimension();
+                            for(int i = 0; i < ipLongOptions.getComponentCount(); i++) {
+                                Rectangle bounds = ipLongOptions.getComponent(i).getBounds();
+                                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                            }
+                            Insets insets = ipLongOptions.getInsets();
+                            preferredSize.width += insets.right;
+                            preferredSize.height += insets.bottom;
+                            ipLongOptions.setMinimumSize(preferredSize);
+                            ipLongOptions.setPreferredSize(preferredSize);
+                        }
+                    }
+                    RandomMenu.addTab(bundle.getString("ipLongOptions.tab.title"), ipLongOptions);
+
+                    //======== ipAddressOptions ========
+                    {
+                        ipAddressOptions.setLayout(null);
+                        ipAddressOptions.add(ipAddressTextField);
+                        ipAddressTextField.setBounds(35, 50, 255, ipAddressTextField.getPreferredSize().height);
+
+                        //---- label74 ----
+                        label74.setText(bundle.getString("label74.text"));
+                        ipAddressOptions.add(label74);
+                        label74.setBounds(new Rectangle(new Point(40, 20), label74.getPreferredSize()));
+
+                        //---- ipAddressSwitchButton ----
+                        ipAddressSwitchButton.setText(bundle.getString("ipAddressSwitchButton.text"));
+                        ipAddressSwitchButton.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                ipAddressSwitchButtonMouseClicked(e);
+                            }
+                        });
+                        ipAddressOptions.add(ipAddressSwitchButton);
+                        ipAddressSwitchButton.setBounds(new Rectangle(new Point(35, 100), ipAddressSwitchButton.getPreferredSize()));
+
+                        //---- label75 ----
+                        label75.setText(bundle.getString("label75.text"));
+                        ipAddressOptions.add(label75);
+                        label75.setBounds(new Rectangle(new Point(45, 170), label75.getPreferredSize()));
+                        ipAddressOptions.add(ipAddressSubNetlabel);
+                        ipAddressSubNetlabel.setBounds(110, 165, 235, 25);
+
+                        //---- label77 ----
+                        label77.setText(bundle.getString("label77.text"));
+                        ipAddressOptions.add(label77);
+                        label77.setBounds(45, 200, 60, 17);
+                        ipAddressOptions.add(ipAddressNetworkdlabel);
+                        ipAddressNetworkdlabel.setBounds(110, 195, 235, 25);
+
+                        //---- label79 ----
+                        label79.setText(bundle.getString("label79.text"));
+                        ipAddressOptions.add(label79);
+                        label79.setBounds(45, 230, 60, 17);
+                        ipAddressOptions.add(ipAddressStartLabel);
+                        ipAddressStartLabel.setBounds(110, 225, 235, 25);
+
+                        //---- label81 ----
+                        label81.setText(bundle.getString("label81.text"));
+                        ipAddressOptions.add(label81);
+                        label81.setBounds(45, 260, 60, 17);
+                        ipAddressOptions.add(ipAddressEndLabel);
+                        ipAddressEndLabel.setBounds(110, 255, 235, 25);
+
+                        //---- label83 ----
+                        label83.setText(bundle.getString("label83.text"));
+                        ipAddressOptions.add(label83);
+                        label83.setBounds(35, 290, 80, 17);
+                        ipAddressOptions.add(ipAddressTotalIpLabel);
+                        ipAddressTotalIpLabel.setBounds(110, 285, 235, 25);
+
+                        {
+                            // compute preferred size
+                            Dimension preferredSize = new Dimension();
+                            for(int i = 0; i < ipAddressOptions.getComponentCount(); i++) {
+                                Rectangle bounds = ipAddressOptions.getComponent(i).getBounds();
+                                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                            }
+                            Insets insets = ipAddressOptions.getInsets();
+                            preferredSize.width += insets.right;
+                            preferredSize.height += insets.bottom;
+                            ipAddressOptions.setMinimumSize(preferredSize);
+                            ipAddressOptions.setPreferredSize(preferredSize);
+                        }
+                    }
+                    RandomMenu.addTab(bundle.getString("ipAddressOptions.tab.title"), ipAddressOptions);
                 }
                 JtabbedPan11.addTab(bundle.getString("RandomMenu.tab.title"), RandomMenu);
 
@@ -2931,6 +3527,8 @@ public class jFormGUI extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     private JMenuBar AboutOptionsMenuBar;
+    private JMenu menu1;
+    private JMenuItem menuItem1;
     private JMenu AboutOptionsMenu;
     private JMenuItem AboutOptionsMenuItem;
     private JPanel inputFields;
@@ -2949,6 +3547,9 @@ public class jFormGUI extends JFrame {
     private JList HistoryRportValueJList;
     private JButton saveMenuButton;
     private JButton Delectbutton;
+    private JButton ipLongSettingButton;
+    private JLabel label73;
+    private JButton ipLongRenewButton;
     public JPanel LPanel1;
     private JLabel LHOST;
     private JLabel LPORT;
@@ -2974,12 +3575,20 @@ public class jFormGUI extends JFrame {
     private JLabel label35;
     private JTextField Bash1TextArea;
     private JTextField Bash2TextArea;
-    private JLabel label43;
-    private JTextField JavaBashTextArea;
     private JButton ReBash1Button;
     private JButton ReBash2Button;
-    private JButton ReJavaBashbutton;
-    private JLabel ReCopyEcholabel;
+    private JLabel label76;
+    private JTextField Bash3TCPTextField;
+    private JButton Bash3TCPButton;
+    private JTextField Bash1UDPTextField;
+    private JTextField Bash2UDPTextField;
+    private JLabel label84;
+    private JLabel label85;
+    private JButton button2;
+    private JButton button5;
+    private JPanel AwkOptions;
+    private JTextField ReverseAwkTextField;
+    private JButton ReverseAwkCopyButton;
     private JPanel RCEMenu;
     private JTabbedPane CurlOption;
     private JPanel panel3;
@@ -3091,8 +3700,8 @@ public class jFormGUI extends JFrame {
     private JLabel label41;
     private JTextField LoDNSlogTextField;
     private JPanel REs;
-    private JTabbedPane tabbedPane3;
-    private JPanel panel9;
+    private JTabbedPane ResTabbedPane;
+    private JPanel ReExpressionPanel;
     private JLabel label11;
     private JLabel label12;
     private JButton IPCopybutton;
@@ -3113,6 +3722,19 @@ public class jFormGUI extends JFrame {
     private JLabel label16;
     private JButton SSHkey;
     private JButton RSAKEYbutton;
+    private JPanel ReMasscanPanel;
+    private JLabel label68;
+    private JScrollPane scrollPane9;
+    private JTextArea ReInputVauletextArea;
+    private JTextField ReMasscanTextField;
+    private JLabel label69;
+    private JButton ReResetButton;
+    private JButton ReCopyMasscanButton;
+    private JLabel ReCopySelabel;
+    private JLabel label70;
+    private JScrollPane scrollPane19;
+    private JTextArea ReIPPortFTextArea;
+    private JButton ReIPPortCopyButton;
     private JPanel DeCodeAndEnCodes;
     private JTabbedPane DeAndEnCodeBase64s;
     private JPanel Base64DeCodes;
@@ -3150,6 +3772,13 @@ public class jFormGUI extends JFrame {
     private JButton unicodeEnCodeButton;
     private JButton unicodeDeCodeButton;
     private JLabel label64;
+    private JPanel JavaBase64OptionsPanel;
+    private JLabel label43;
+    private JLabel label78;
+    private JTextField JavaBaseInputTextField;
+    private JLabel label82;
+    private JTextField JavaBaseOtputTextField;
+    private JButton ReJavaBashbutton;
     private JTabbedPane RandomMenu;
     private JPanel RaPasswordOptions;
     private JPanel RaPasswordpanel;
@@ -3162,7 +3791,7 @@ public class jFormGUI extends JFrame {
     private JSpinner PasswordLens;
     private JLabel label4;
     private JButton CopyPasswordbutton;
-    private JPanel panel1;
+    private JPanel timeStampOptions;
     private JLabel label61;
     private JTextField timeStampEchoTextField;
     private JButton timeStampEchobutton;
@@ -3176,6 +3805,27 @@ public class jFormGUI extends JFrame {
     private JButton button4;
     private JLabel label65;
     private JLabel label66;
+    private JPanel ipLongOptions;
+    private JTextField ipLongInputField;
+    private JTextField ipLongOutputTextField;
+    private JLabel label71;
+    private JLabel label72;
+    private JButton ipLongIPButton;
+    private JButton ipLongnNumButton;
+    private JPanel ipAddressOptions;
+    private JTextField ipAddressTextField;
+    private JLabel label74;
+    private JButton ipAddressSwitchButton;
+    private JLabel label75;
+    private JLabel ipAddressSubNetlabel;
+    private JLabel label77;
+    private JLabel ipAddressNetworkdlabel;
+    private JLabel label79;
+    private JLabel ipAddressStartLabel;
+    private JLabel label81;
+    private JLabel ipAddressEndLabel;
+    private JLabel label83;
+    private JLabel ipAddressTotalIpLabel;
     private JTabbedPane CustomEditMenu;
     private JScrollPane CustomEditOptions;
     private JTextArea CustomEdit1TextArea;

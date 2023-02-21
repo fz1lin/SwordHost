@@ -12,43 +12,40 @@ public class menuMsfServiceImpl implements menuMsfService {
 
 
     @Override
-    public void msfShellMenu(JTextField LhostValue, JTextField LportValue, JTextField FileNameVaule,
+    public void msfShellMenu(
                              JTextField sessionIdTextField,
                              JTextArea msfRootTextArea, JTextField msfLinuxHexTextField,
                              JTextField msfLinuxELFTextField, JTextArea msfLinuxListenerTextArea,
                              JTextArea msfWindowsListenerTextArea,
                              JTextArea csMsfTextArea, JTextArea MSFcsTextArea
     ) {
-        String getLhost = LhostValue.getText();
-        String getLport = LportValue.getText();
-        String getFileName = FileNameVaule.getText();
         //msf init
         String payload = "exploit/linux/local/cve_2021_4034_pwnkit_lpe_pkexec";
-        String rootCommand = MetasploitController.RootCommand(payload, getLhost, getLport, sessionIdTextField.getText());
+        String rootCommand = MetasploitController.RootCommand(payload, sessionIdTextField.getText());
         msfRootTextArea.setText(rootCommand);
 
         //msf linuxPayload
-        String MsflinuxHex = MetasploitController.MsflinuxHexCommand(getLhost, getLport);
+        String MsflinuxHex = MetasploitController.MsflinuxHexCommand();
         msfLinuxHexTextField.setText(MsflinuxHex);
 
         //MSF linuxElfPayload
-        String msflinuxELFCommand = MetasploitController.MsflinuxELFCommand(getLhost, getLport, getFileName);
+        String msflinuxELFCommand = MetasploitController.MsflinuxELFCommand();
         msfLinuxELFTextField.setText(msflinuxELFCommand);
 
         //msf LinuxListener
-        String msfLinuxListener = MetasploitController.ListenerLinuxhandler(getLhost, getLport);
+        String msfLinuxListener = MetasploitController.ListenerLinuxhandler();
         msfLinuxListenerTextArea.setText(msfLinuxListener);
 
         //msf WindowsListener
-        String msfWindowsListener = MetasploitController.ListenerWindowshandler(getLhost, getLport);
+        String msfWindowsListener = MetasploitController.ListenerWindowshandler();
         msfWindowsListenerTextArea.setText(msfWindowsListener);
 
         //cs->msf CsMsfForeignCommand
-        String CsMsfForeignStr = MetasploitController.CsMsfForeignCommand(getLhost, getLport);
+        String CsMsfForeignStr = MetasploitController.CsMsfForeignCommand();
         csMsfTextArea.setText(CsMsfForeignStr);
 
         //msf->cs MsfCsForeignCommand
-        String MsfCsForeign = MetasploitController.MsfCsForeignCommand(getLhost, getLport);
+        String MsfCsForeign = MetasploitController.MsfCsForeignCommand();
         MSFcsTextArea.setText(MsfCsForeign);
 
     }

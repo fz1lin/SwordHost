@@ -1,6 +1,6 @@
 package com.swordHostDemo.service.proxy;
 
-import com.swordHostDemo.controller.StowawayController;
+import com.swordHostDemo.controller.ProxyController;
 
 import javax.swing.*;
 
@@ -10,17 +10,17 @@ import javax.swing.*;
  */
 public class menuProxyServiceImpl implements menuProxyService {
     @Override
-    public void stowawayOption(JTextField LhostValue, JTextField LportValue, JTextField FileNameVaule,
+    public void stowawayOption(
                                JTextArea stAdminTextArea, JTextArea stLinuxAgentTextArea,
                                JTextArea stWindowsAgentTextArea) {
         //admin
-        String stowawayAdmin = StowawayController.StowawayAdmin(LportValue.getText(), "243141");
+        String stowawayAdmin = ProxyController.StowawayAdmin();
         stAdminTextArea.setText(stowawayAdmin);
         //linux agent
-        String stowawayLinuxAgent = StowawayController.StowawayLinuxAgent(LhostValue.getText(), LportValue.getText(), "243141", FileNameVaule.getText());
+        String stowawayLinuxAgent = ProxyController.StowawayLinuxAgent();
         stLinuxAgentTextArea.setText(stowawayLinuxAgent);
         //windows agent
-        String stowawayWindowsAgent = StowawayController.StowawayWindosAgent(LhostValue.getText(), LportValue.getText(), "243141");
+        String stowawayWindowsAgent = ProxyController.StowawayWindosAgent();
         stWindowsAgentTextArea.setText(stowawayWindowsAgent);
     }
 }

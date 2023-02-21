@@ -2,6 +2,7 @@ package com.swordHostDemo.service.java;
 
 import com.swordHostDemo.controller.FastjsonController;
 import com.swordHostDemo.controller.Log4j2Controller;
+import com.swordHostDemo.pojo.menuBeanListener;
 
 import javax.swing.*;
 
@@ -12,22 +13,22 @@ import javax.swing.*;
 public class menuJavaServiceImpl implements menuJavaService {
 
     @Override
-    public void fastjsonMenu(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue, JTextArea FaEXP1TextArea, JTextArea FaDNSlogTextArea) {
+    public void fastjsonMenu( JTextArea FaEXP1TextArea, JTextArea FaDNSlogTextArea,String inputString) {
         //FastjsonOption
-        String fastjsonOption = FastjsonController.fastjsonEXP1(LhostValue.getText(), LportValue.getText());
+        String fastjsonOption = FastjsonController.fastjsonEXP1(inputString);
         FaEXP1TextArea.setText(fastjsonOption);
         //FaDNSlogOption
-        String faDNSlogOption = FastjsonController.fastjsonDnslog(DNSlogValue.getText());
+        String faDNSlogOption = FastjsonController.fastjsonDnslog(menuBeanListener.getDnsLog());
         FaDNSlogTextArea.setText(faDNSlogOption);
     }
 
     @Override
-    public void log4j2Menu(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue, JTextField LoIPTextArea, JTextField LoDNSlogTextArea) {
+    public void log4j2Menu( JTextField LoIPTextArea, JTextField LoDNSlogTextArea) {
         //Log4j2Option
-        String Log4j2Option = Log4j2Controller.LoIPlog4j2(LhostValue.getText(), LportValue.getText());
+        String Log4j2Option = Log4j2Controller.LoIPlog4j2();
         LoIPTextArea.setText(Log4j2Option);
         //Log4j2DNSlogOption
-        String Log4j2DNSlogOption = Log4j2Controller.LoDnslog4j2(DNSlogValue.getText());
+        String Log4j2DNSlogOption = Log4j2Controller.LoDnslog4j2();
         LoDNSlogTextArea.setText(Log4j2DNSlogOption);
 
     }

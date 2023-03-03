@@ -1,9 +1,7 @@
 package com.swordHostDemo.utls;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.swing.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +25,26 @@ public class regularUtls {
     public final static String RErsa_key = "-----BEGIN RSA PRIVATE KEY-----[a-zA-Z0-9\\\\S]{100,}-----END RSA PRIVATE KEY-----";
     public final static String REportMasscaName = "(\\d+)\\/tcp";
     public final static String REIPMasscanName = "\\b(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b";
+
+
+    public static HashMap<String, String> reVauleHashMap() {
+
+        HashMap<String, String> value = new HashMap<>();
+        value.put("提取ip", REHOST);
+        value.put("URL不带路径", REurl);
+        value.put("URL+Path", REurlPath);
+        value.put("AccessKey", REAliyunAccessKey);
+        value.put("SecretKey", REAliyunSecretKey);
+        value.put("OssUrl", REAliyunOssUrl);
+        value.put("AccessKeyId", REAWS_AccessKeyId);
+        value.put("AuthToken", REAWS_AuthToken);
+        value.put("AWS_URL", REAWS_url);
+        value.put("SSH_KEY", RESSH_key);
+        value.put("RSA_KEY", RErsa_key);
+
+
+        return value;
+    }
 
 
     public static String Masscaninit(String input) {
@@ -74,16 +92,14 @@ public class regularUtls {
             ipSet.add(matcher.group(1));
         }
         System.out.println("Discovered IP addresses: " + ipSet);
-
         String ipSet1 = String.valueOf(ipSet);
-
         String replaces = ipSet1.replace("[", "");
         replaces = replaces.replace("]", "");
         return replaces;
     }
 
     //提取 Masscan IP:PORT格式
-    public static List<String> IPAndPortExtractor (String input) {
+    public static List<String> IPAndPortExtractor(String input,int portStart,int portEnd ) {
         List<String> result = new ArrayList<>();
         String re = "(\\d+\\.\\d+\\.\\d+\\.\\d+)";
         String re1 = "(\\d+)/tcp on (\\d+\\.\\d+\\.\\d+\\.\\d+)";
@@ -93,8 +109,6 @@ public class regularUtls {
         Pattern portPattern = Pattern.compile(re1);
         Matcher portMatcher = portPattern.matcher(input);
 
-        int portStart = 1;
-        int portEnd = 65535;
 
         while (ipMatcher.find() && portMatcher.find()) {
             String ip = portMatcher.group(2);
@@ -109,5 +123,56 @@ public class regularUtls {
         return result;
     }
 
+    //正则表达式提取公共类
+    public static HashMap<Integer, String> reUtlsHashMap(String regexs, String values) {
+
+        Pattern pattern = Pattern.compile(regexs);
+        Matcher matcher = pattern.matcher(values);
+        HashMap<Integer, String> stringHashMap = new HashMap<>();
+        Integer i = 0;
+        while (matcher.find()) {
+            stringHashMap.put(i++, matcher.group());
+        }
+
+        return stringHashMap;
+    }
+
+    //HashMap 结果去重
+    public static HashMap<String, Integer> reQuChongHashMap(String regexs, String values, JTextArea resultArea) {
+        // TODO add your code here
+
+        resultArea.setText("");
+        HashMap<Integer, String> map = regularUtls.reUtlsHashMap(regexs, values);
+        HashMap<String, Integer> newMap = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            newMap.put(entry.getValue(),entry.getKey());
+        }
+        for (String value : newMap.keySet()) {
+            // 输出每一个value
+            resultArea.append(value+"\n");
+//            System.out.print("ReOutputIPTextArea：" + value + "\n");
+        }
+        return newMap;
+    }
+
+    public static void main(String[] args) {
+//        String ipString = "10.10.56.137:9090\",\n" +
+//                "                    \"__meta_kubernetes_pod_host_ip\": \"10.10.57.41\",\n" +
+//                "                    \"__meta_kubernetes_pod_ip\": \"10.10.56.137\",\n" +
+//                "                    \"__meta_kubernetes_pod_ip\": \"10.10.56.137\",\n" +
+//                "                    \"__meta_kubernetes_pod_ip\": \"10.10.56.137\",\n" +
+//                "                    \"https://baidu.com";
+//        HashMap<Integer, String> Sites = reUtlsHashMap(REurl, ipString);
+//        // 输出 key 和 value
+//        for (Integer i : Sites.keySet()) {
+//            System.out.println("key: " + i + " value: " + Sites.get(i));
+//        }
+//        // 返回所有 value 值
+//
+//        for (String value : Sites.values()) {
+//            // 输出每一个value
+//            System.out.print(value + "\n");
+//        }
+    }
 
 }

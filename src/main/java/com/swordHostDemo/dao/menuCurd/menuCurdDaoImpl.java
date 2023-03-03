@@ -14,15 +14,15 @@ public class menuCurdDaoImpl implements menuCurdDao {
     //查询数据
     @Override
     public void selectData(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue
-            , JTextField RhostValue, JTextField RportVaule, JTextField CommandVaule, JTextField FileNameVaule) throws Exception {
+            , JTextField HTTPPortValue, JTextField LDAPPortVaule, JTextField CommandVaule, JTextField FileNameVaule) throws Exception {
 
         menuBeanDaoImpl menuDaoImpl = new menuBeanDaoImpl(menuBeanDaoImpl.getConnection());
         MenuBean idMenuBean = menuDaoImpl.getIdMenuBean(menuDaoImpl.getIdMaxInteger());
         String lhost = idMenuBean.getLhost();
         String lport = idMenuBean.getLport();
         String dnslog = idMenuBean.getDnsLog();
-        String rhost = idMenuBean.getRhost();
-        String rport = idMenuBean.getRport();
+        String httpPortValue = idMenuBean.getHTTPPort();
+        String rport = idMenuBean.getLDAPPort();
         String command = idMenuBean.getCommand();
         String fileName = idMenuBean.getFileName();
         System.out.println("selectData：" + idMenuBean);
@@ -30,8 +30,8 @@ public class menuCurdDaoImpl implements menuCurdDao {
         LhostValue.setText(lhost);
         LportValue.setText(lport);
         DNSlogValue.setText(dnslog);
-        RhostValue.setText(rhost);
-        RportVaule.setText(rport);
+        HTTPPortValue.setText(httpPortValue);
+        LDAPPortVaule.setText(rport);
         CommandVaule.setText(command);
         FileNameVaule.setText(fileName);
         //释放资源
@@ -41,7 +41,7 @@ public class menuCurdDaoImpl implements menuCurdDao {
     //添加数据
     @Override
     public void addData(JTextField LhostValue, JTextField LportValue, JTextField DNSlogValue
-            , JTextField RhostValue, JTextField RportVaule, JTextField CommandVaule, JTextField FileNameVaule) throws Exception {
+            , JTextField HTTPPortValue, JTextField LDAPPortVaule, JTextField CommandVaule, JTextField FileNameVaule) throws Exception {
         menuBeanDaoImpl menuDaoImpl = new menuBeanDaoImpl(menuBeanDaoImpl.getConnection());
 
         //最大值me
@@ -50,8 +50,8 @@ public class menuCurdDaoImpl implements menuCurdDao {
 
         String strLhost = LhostValue.getText();
         String strLport = LportValue.getText();
-        String strRhost = RhostValue.getText();
-        String strRport = RportVaule.getText();
+        String strHTTPPort = HTTPPortValue.getText();
+        String strLDAPPort = LDAPPortVaule.getText();
 
         //判断数值是否是正确格式，是正确格式存入数据库，不是正确格式不存入
         if (!regularUtls.reHost(strLhost)) {
@@ -60,15 +60,15 @@ public class menuCurdDaoImpl implements menuCurdDao {
         if (!regularUtls.rePort(strLport)) {
             strLport = "";
         }
-        if (!regularUtls.reHost(strRhost)) {
-            strRhost = "";
+        if (!regularUtls.rePort(strHTTPPort)) {
+            strHTTPPort = "";
         }
-        if (!regularUtls.rePort(strRport)) {
-            strRport = "";
+        if (!regularUtls.rePort(strLDAPPort)) {
+            strLDAPPort = "";
         }
 
         MenuBean menuBean = new MenuBean(idMaxInteger, strLhost, strLport, DNSlogValue.getText()
-                , FileNameVaule.getText(), strRhost, strRport, CommandVaule.getText(), "null");
+                , FileNameVaule.getText(), strHTTPPort, strLDAPPort, CommandVaule.getText(), "null");
         System.out.println("addData " + menuBean);
         menuDaoImpl.setInsertMenuBean(menuBean);
 

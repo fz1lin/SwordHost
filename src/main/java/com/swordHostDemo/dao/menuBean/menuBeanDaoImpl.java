@@ -15,7 +15,6 @@ public class menuBeanDaoImpl implements menuBeanDao {
     private Connection connection;
     private PreparedStatement preparedStatement = null;
     private ResultSet rs;
-
     public menuBeanDaoImpl(Connection connection) {
         this.connection = connection;
     }
@@ -37,14 +36,15 @@ public class menuBeanDaoImpl implements menuBeanDao {
 
     @Override
     public void setInsertMenuBean(MenuBean menuBean) throws Exception {
-        preparedStatement = connection.prepareStatement("INSERT INTO menu (id,Lhost,Lport,Dnslog,FileName,Rhost,Rport,Command,remark) VALUES (?,?,?,?,?,?,?,?,?);");
+        preparedStatement = connection.prepareStatement("INSERT INTO menu (id,Lhost,Lport,Dnslog,FileName,HTTPPort,LDAPPort,Command,remark) VALUES (?,?,?,?,?,?,?,?,?);");
+
         preparedStatement.setInt(1, menuBean.getId());
         preparedStatement.setString(2, menuBean.getLhost());
         preparedStatement.setString(3, menuBean.getLport());
         preparedStatement.setString(4, menuBean.getDnsLog());
         preparedStatement.setString(5, menuBean.getFileName());
-        preparedStatement.setString(6, menuBean.getRhost());
-        preparedStatement.setString(7, menuBean.getRport());
+        preparedStatement.setString(6, menuBean.getHTTPPort());
+        preparedStatement.setString(7, menuBean.getLDAPPort());
         preparedStatement.setString(8, menuBean.getCommand());
         preparedStatement.setString(9, menuBean.getRemark());
         preparedStatement.executeUpdate();
@@ -62,8 +62,8 @@ public class menuBeanDaoImpl implements menuBeanDao {
             menuBean.setLport(rs.getString("Lport"));
             menuBean.setDnsLog(rs.getString("DnsLog"));
             menuBean.setFileName(rs.getString("FileName"));
-            menuBean.setRhost(rs.getString("Rhost"));
-            menuBean.setRport(rs.getString("Rport"));
+            menuBean.setHTTPPort(rs.getString("HTTPPort"));
+            menuBean.setLDAPPort(rs.getString("LDAPPort"));
             menuBean.setCommand(rs.getString("Command"));
             menuBean.setRemark(rs.getString("remark"));
         }
@@ -86,8 +86,8 @@ public class menuBeanDaoImpl implements menuBeanDao {
             menuBean.setLport(rs.getString(3));
             menuBean.setDnsLog(rs.getString(4));
             menuBean.setFileName(rs.getString(5));
-            menuBean.setRhost(rs.getString(6));
-            menuBean.setRport(rs.getString(7));
+            menuBean.setHTTPPort(rs.getString(6));
+            menuBean.setLDAPPort(rs.getString(7));
             menuBean.setCommand(rs.getString(8));
             menuBean.setRemark(rs.getString(9));
             list.add(menuBean);
@@ -128,14 +128,14 @@ public class menuBeanDaoImpl implements menuBeanDao {
 
     @Override
     public Integer updateIdMenuBean(int id,MenuBean menuBean) throws Exception {
-        preparedStatement = connection.prepareStatement("UPDATE menu SET Lhost = ?, Lport = ?,DnsLog =?,FileName=?,Rhost=?,Rport=?,Command=?,remark=? WHERE id = ?;");
+        preparedStatement = connection.prepareStatement("UPDATE menu SET Lhost = ?, Lport = ?,DnsLog =?,FileName=?,HTTPPort=?,LDAPPort=?,Command=?,remark=? WHERE id = ?;");
 
         preparedStatement.setString(2, menuBean.getLhost());
         preparedStatement.setString(3, menuBean.getLport());
         preparedStatement.setString(4, menuBean.getDnsLog());
         preparedStatement.setString(5, menuBean.getFileName());
-        preparedStatement.setString(6, menuBean.getRhost());
-        preparedStatement.setString(7, menuBean.getRport());
+        preparedStatement.setString(6, menuBean.getHTTPPort());
+        preparedStatement.setString(7, menuBean.getLDAPPort());
         preparedStatement.setString(8, menuBean.getCommand());
         preparedStatement.setString(9, menuBean.getRemark());
         preparedStatement.setInt(1, menuBean.getId());
@@ -213,4 +213,6 @@ public class menuBeanDaoImpl implements menuBeanDao {
 
     }
 
+    private static class SQLI {
+    }
 }

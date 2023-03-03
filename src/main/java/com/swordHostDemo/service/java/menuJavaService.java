@@ -25,4 +25,15 @@ public interface menuJavaService {
      * @description: Log4j2 相关
      */
     void log4j2Menu( JTextField LoIPTextArea, JTextField LoDNSlogTextArea);
+
+    /**
+    * @param JNDIExploitTextField:
+     * @param JNDValueITextArea:
+     * @return: void
+     * @author: DXAJUI
+     * @date: 2023/3/1 19:26
+     * @description: JNDI 面板
+     */
+    void JndiMenu(JTextField JNDIExploitTextField,JTextArea JNDValueITextArea);
+
 }

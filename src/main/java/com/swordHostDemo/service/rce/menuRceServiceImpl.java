@@ -4,6 +4,7 @@ import com.swordHostDemo.controller.RceController;
 import com.swordHostDemo.pojo.menuBeanListener;
 
 import javax.swing.*;
+import javax.swing.event.CaretListener;
 
 import static com.swordHostDemo.pojo.menuBeanListener.*;
 
@@ -15,7 +16,8 @@ public class menuRceServiceImpl implements menuRceService {
 
     @Override
     public void rceMenu(JTextField Curl1TextField, JTextField Curl2TextField,
-                        JTextArea Wget1TextArea, JTextArea PythonTextArea
+                        JTextArea Wget1TextArea, JTextArea PythonTextArea,
+                        JTextField CatListenerTextField, JTextField CatAttackTextField
     ) {
 
 
@@ -33,5 +35,11 @@ public class menuRceServiceImpl implements menuRceService {
         //Python
         String PythonOptions = RceController.pythonCommand();
         PythonTextArea.setText(PythonOptions);
+
+        String CatListener = RceController.catListener();
+        CatListenerTextField.setText(CatListener);
+
+        String CatAttack = RceController.catAttack();
+        CatAttackTextField.setText(CatAttack);
     }
 }

@@ -10,23 +10,22 @@ public class MenuBean{
     private String Lport;
     private String DnsLog;
     private String FileName;
-    private String Rhost;
-    private String Rport;
+    private String HTTPPort;
+    private String LDAPPort;
     private String Command;
     private String remark;
 
     public MenuBean() {
     }
 
-
-    public MenuBean(int id, String lhost, String lport, String dnsLog, String fileName, String rhost, String rport, String command, String remark) {
+    public MenuBean(int id, String lhost, String lport, String dnsLog, String fileName, String HTTPPort, String LDAPPort, String command, String remark) {
         this.id = id;
         Lhost = lhost;
         Lport = lport;
         DnsLog = dnsLog;
         FileName = fileName;
-        Rhost = rhost;
-        Rport = rport;
+        this.HTTPPort = HTTPPort;
+        this.LDAPPort = LDAPPort;
         Command = command;
         this.remark = remark;
     }
@@ -71,20 +70,20 @@ public class MenuBean{
         FileName = fileName;
     }
 
-    public String getRhost() {
-        return Rhost;
+    public String getHTTPPort() {
+        return HTTPPort;
     }
 
-    public void setRhost(String rhost) {
-        Rhost = rhost;
+    public void setHTTPPort(String HTTPPort) {
+        this.HTTPPort = HTTPPort;
     }
 
-    public String getRport() {
-        return Rport;
+    public String getLDAPPort() {
+        return LDAPPort;
     }
 
-    public void setRport(String rport) {
-        Rport = rport;
+    public void setLDAPPort(String LDAPPort) {
+        this.LDAPPort = LDAPPort;
     }
 
     public String getCommand() {
@@ -101,20 +100,5 @@ public class MenuBean{
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "MenuBean{" +
-                "id=" + id +
-                ", Lhost='" + Lhost + '\'' +
-                ", Lport='" + Lport + '\'' +
-                ", DnsLog='" + DnsLog + '\'' +
-                ", FileName='" + FileName + '\'' +
-                ", Rhost='" + Rhost + '\'' +
-                ", Rport='" + Rport + '\'' +
-                ", Command='" + Command + '\'' +
-                ", remark='" + remark + '\'' +
-                '}';
     }
 }

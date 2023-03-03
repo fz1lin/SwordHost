@@ -1065,5 +1065,8 @@ public class antivirusConntroller {
         TestContext("360tray");
         TestContext("cleaner8");
         TestContext("ccRegVfy");
+
+       String str =  "svchost.exe   " ;
+       TestContext(str);
     }
 }

@@ -17,6 +17,7 @@ public interface menuRceService {
      * @description: RCE返回的值
      */
     void rceMenu(JTextField Curl1TextField, JTextField Curl2TextField,
-                 JTextArea Wget1TextArea, JTextArea PythonTextArea
+                 JTextArea Wget1TextArea, JTextArea PythonTextArea,
+                 JTextField CatListenerTextField, JTextField CatAttackTextField
     );
 }

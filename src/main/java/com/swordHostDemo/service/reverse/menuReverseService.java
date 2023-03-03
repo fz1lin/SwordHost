@@ -15,6 +15,6 @@ public interface menuReverseService {
      * @description: bash反弹shell选项菜单
      */
     void reverseBashOptionsMenu(JTextField Bash1TextArea
-            , JTextField Bash2TextArea,JTextField Bash3TCPTextField,JTextField Bash1UDPTextField,JTextField Bash2UDPTextField);
+            , JTextField Bash2TextArea,JTextField Bash3TCPTextField,JTextField Bash1UDPTextField,JTextField Bash2UDPTextField ,JTextField BashTCP4TextField);
     void reverseAwkOptionsMenu(JTextField ReverseAwkTextField);
 }

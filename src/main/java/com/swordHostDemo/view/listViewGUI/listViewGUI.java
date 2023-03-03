@@ -35,15 +35,15 @@ public class listViewGUI extends JFrame {
         JSONObject json = JSON.parseObject(studentJson);
         JSONArray data = json.getJSONArray("allMenuBean");
 
-        model.setColumnIdentifiers(new Object[]{"ID", "Lhost", "Lport", "DnsLog", "FileName", "Rhost", "Rport", "Command"});
+        model.setColumnIdentifiers(new Object[]{"ID", "Lhost", "Lport", "DnsLog", "FileName","HTTPPort", "LDAPPort", "Command"}); //
         for (int i = 0; i < data.size(); i++) {
             int id = (int) data.getJSONObject(i).get("id");
             String lhostData = (String) data.getJSONObject(i).get("lhost");
             String lportData = (String) data.getJSONObject(i).get("lport");
             String dnsLogData = (String) data.getJSONObject(i).get("dnsLog");
             String fileNameData = (String) data.getJSONObject(i).get("fileName");
-            String rhostData = (String) data.getJSONObject(i).get("rhost");
-            String rportData = (String) data.getJSONObject(i).get("rport");
+            String rhostData = (String) data.getJSONObject(i).get("hTTPPort");
+            String rportData = (String) data.getJSONObject(i).get("lDAPPort");
             String commandData = (String) data.getJSONObject(i).get("command");
             model.addRow(new Object[]{id, lhostData, lportData, dnsLogData, fileNameData, rhostData, rportData, commandData});
         }

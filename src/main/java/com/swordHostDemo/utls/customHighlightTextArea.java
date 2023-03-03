@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 /**
- * @author 1
+ * 文本域高亮
  */
 public class customHighlightTextArea {
     private RSyntaxTextArea syntaxTextArea;
@@ -24,8 +24,6 @@ public class customHighlightTextArea {
         syntaxTextArea.setText(jTextArea.getText());
         scrollPane.setViewportView(syntaxTextArea);
     }
-
-
     public String getSyntaxTextArea(){
         return syntaxTextArea.getText();
     }

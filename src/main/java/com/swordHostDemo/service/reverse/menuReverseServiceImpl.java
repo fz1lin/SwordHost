@@ -14,8 +14,8 @@ public class menuReverseServiceImpl implements menuReverseService {
     @Override
     public void reverseBashOptionsMenu( JTextField Bash1TextArea,
                                        JTextField Bash2TextArea, JTextField Bash3TCPTextField
-            , JTextField Bash1UDPTextField, JTextField Bash2UDPTextField
-    ) {
+            , JTextField Bash1UDPTextField, JTextField Bash2UDPTextField, JTextField  BashTCP4TextField
+) {
      //Bash1Option
         String bash1Option = ReverseController.ReverseBashTCP1();
         Bash1TextArea.setText(bash1Option);
@@ -27,6 +27,9 @@ public class menuReverseServiceImpl implements menuReverseService {
         //Bash3TCP
         String bash3Options = ReverseController.ReverseBashTCP3();
         Bash3TCPTextField.setText(bash3Options);
+
+        String bash4Option = ReverseController.ReverseBashTCP4();
+        BashTCP4TextField.setText(bash4Option);
 
         //Bash udp 1
         String bash1UDP = ReverseController.ReverseBashUDPVictim();

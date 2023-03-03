@@ -24,7 +24,7 @@ public class enCodeUtls {
         byte[] textByte = new byte[0];
         textByte = str.getBytes(StandardCharsets.UTF_8);
         final String encodedText = Base64.getEncoder().encodeToString(textByte);
-        System.out.println(encodedText);
+        System.out.println("base64Encode："+encodedText);
         return encodedText;
     }
     /**

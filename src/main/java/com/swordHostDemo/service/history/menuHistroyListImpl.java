@@ -34,8 +34,8 @@ public class menuHistroyListImpl implements menuHistroyList{
         List<String> lport = new ArrayList<>();
         List<String> dnsLong = new ArrayList<>();
         List<String> fileName = new ArrayList<>();
-        List<String> rhost = new ArrayList<>();
-        List<String> rport = new ArrayList<>();
+        List<String> hTTPPort = new ArrayList<>();
+        List<String> lDAPPort = new ArrayList<>();
         List<String> command = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
             JSONObject item = data.getJSONObject(i);
@@ -43,8 +43,8 @@ public class menuHistroyListImpl implements menuHistroyList{
             lport.add(item.getString("lport"));
             dnsLong.add(item.getString("dnsLog"));
             fileName.add(item.getString("fileName"));
-            rhost.add(item.getString("rhost"));
-            rport.add(item.getString("rport"));
+            hTTPPort.add(item.getString("hTTPPort"));
+            lDAPPort.add(item.getString("lDAPPort"));
             command.add(item.getString("command"));
         }
 
@@ -63,10 +63,10 @@ public class menuHistroyListImpl implements menuHistroyList{
         List<String> fileNameCollect = dataManager(fileName);
         HistoryFileNameValueJList.setListData(fileNameCollect.toArray());
         //rhost
-        List<String> rhostCollect = dataManager(rhost);
+        List<String> rhostCollect = dataManager(hTTPPort);
         HistoryRhostValueJList.setListData(rhostCollect.toArray());
         //rport
-        List<String> rportCollect = dataManager(rport);
+        List<String> rportCollect = dataManager(lDAPPort);
         HistoryRportValueJList.setListData(rportCollect.toArray());
         //command
         List<String> commandCollect = dataManager(command);

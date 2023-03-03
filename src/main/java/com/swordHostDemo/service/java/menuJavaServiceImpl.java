@@ -1,6 +1,7 @@
 package com.swordHostDemo.service.java;
 
 import com.swordHostDemo.controller.FastjsonController;
+import com.swordHostDemo.controller.JNDIExploitControler;
 import com.swordHostDemo.controller.Log4j2Controller;
 import com.swordHostDemo.pojo.menuBeanListener;
 
@@ -30,6 +31,12 @@ public class menuJavaServiceImpl implements menuJavaService {
         //Log4j2DNSlogOption
         String Log4j2DNSlogOption = Log4j2Controller.LoDnslog4j2();
         LoDNSlogTextArea.setText(Log4j2DNSlogOption);
-
     }
+
+    @Override
+    public void JndiMenu(JTextField JNDIExploitTextField, JTextArea JNDValueITextArea){
+        JNDIExploitTextField.setText(JNDIExploitControler.JNDIExploit());
+        JNDValueITextArea.setText(JNDIExploitControler.JavaBytecodeExec());
+    }
+
 }

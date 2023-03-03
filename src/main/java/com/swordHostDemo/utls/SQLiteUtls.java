@@ -32,7 +32,7 @@ public class SQLiteUtls {
                     "CREATE TABLE IF NOT EXISTS `menu` ( `id` INT PRIMARY KEY NOT NULL," +
                             "`Lhost` VARCHAR(255) NOT NULL, `Lport` VARCHAR(255) NOT NULL ," +
                             "`DnsLog` VARCHAR(255) NOT NULL,`FileName` VARCHAR(255) NOT NULL," +
-                            "`Rhost` VARCHAR(255) NOT NULL,`Rport` VARCHAR(255) NOT NULL," +
+                            "`HTTPPort` VARCHAR(255) NOT NULL,`LDAPPort` VARCHAR(255) NOT NULL," +
                             "`Command` VARCHAR(255) NOT NULL,`remark` VARCHAR(255) NOT NULL);";
             //初始化sql语句
 //            String insertCustomInit = "INSERT INTO custom (name,namevalue) VALUES ('customValue','');";

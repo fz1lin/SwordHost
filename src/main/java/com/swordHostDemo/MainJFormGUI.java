@@ -15,7 +15,10 @@ import java.awt.*;
 public class MainJFormGUI {
 
 
-    public final static String VersionString = "Version：SwordHost " + "v1.0.0 beta 内测版";
+    //HTTPPortValue     RHOST
+    //LDAPPortVaule     RPORT
+
+    public final static String VersionString = "Version：SwordHost " + "v1.1.1";
     public static void main(String[] args) {
         //主题
         themeSwitch();

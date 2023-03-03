@@ -9,10 +9,9 @@ public class menuBeanListener {
     private static String Lport;
     private static String DnsLog;
     private static String FileName;
-    private static String Rhost;
-    private static String Rport;
+    private static String HTTPPort;
+    private static String LDAPPort;
     private static String Command;
-
 
     public static String getLhost() {
         return Lhost;
@@ -46,20 +45,20 @@ public class menuBeanListener {
         FileName = fileName;
     }
 
-    public static String getRhost() {
-        return Rhost;
+    public static String getHTTPPort() {
+        return HTTPPort;
     }
 
-    public static void setRhost(String rhost) {
-        Rhost = rhost;
+    public static void setHTTPPort(String HTTPPort) {
+        menuBeanListener.HTTPPort = HTTPPort;
     }
 
-    public static String getRport() {
-        return Rport;
+    public static String getLDAPPort() {
+        return LDAPPort;
     }
 
-    public static void setRport(String rport) {
-        Rport = rport;
+    public static void setLDAPPort(String LDAPPort) {
+        menuBeanListener.LDAPPort = LDAPPort;
     }
 
     public static String getCommand() {

